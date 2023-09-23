@@ -34,6 +34,15 @@ public class BookController {
     throw new ResourceNotFoundException("Book not found.");
   }
 
+  @GetMapping("/author/{authorId}")
+  public ResponseEntity<Object> getBookByAuthorId(@PathVariable UUID authorId) {
+    var book = bookService.getBookByAuthorId(authorId);
+    if (book != null) {
+      return ResponseHandler.generateResponse("Get book successfully.", HttpStatus.OK, book);
+    }
+    throw new ResourceNotFoundException("Book not found.");
+  }
+
   @PostMapping("")
   public ResponseEntity<Object> insertBook(@RequestBody BookRequest book) {
     var insertedBook = bookService.insertBook(book);
@@ -50,6 +59,5 @@ public class BookController {
   public ResponseEntity<Object> patch(@PathVariable UUID id, @RequestBody Map<String, Object> fields) {
     Book book = bookService.patch(id, fields);
     return ResponseHandler.generateResponse("Updated book id " + id + ".", HttpStatus.OK, book);
-
   }
 }

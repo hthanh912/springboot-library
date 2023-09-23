@@ -43,6 +43,14 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
+  public List<BookResponse> getBookByAuthorId(UUID authorId) {
+    return bookrepository.findAllByAuthorId(authorId)
+            .stream()
+            .map(book -> mapper.map(book, BookResponse.class))
+            .toList();
+  }
+
+  @Override
   public Book insertBook(BookRequest bookDTO) {
     Book book = mapper.map(bookDTO, Book.class);
     Optional<Author> author = authorService.getAuthorById(bookDTO.getAuthorId());
