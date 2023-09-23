@@ -30,7 +30,7 @@ public class Comment {
 
   private Integer rate;
 
-  @ManyToOne()
+  @ManyToOne(fetch = FetchType.LAZY)
   private User user;
 
   @JsonIgnore
