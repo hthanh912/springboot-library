@@ -24,8 +24,7 @@ public class Author {
   private UUID id;
   private String name;
 
-
-  @OneToMany(
+  @OneToMany(fetch = FetchType.LAZY,
       mappedBy = "author",
       cascade = CascadeType.ALL)
   @JsonIgnore
