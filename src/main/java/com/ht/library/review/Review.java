@@ -1,4 +1,4 @@
-package com.ht.library.comment;
+package com.ht.library.review;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,17 +13,17 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "reviews")
 @Data
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class Review {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "comment_id")
+  @Column(name = "review_id")
   private UUID id;
 
   private String content;

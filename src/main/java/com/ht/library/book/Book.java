@@ -1,9 +1,8 @@
 package com.ht.library.book;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ht.library.author.Author;
-import com.ht.library.comment.Comment;
+import com.ht.library.review.Review;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,7 +36,7 @@ public class Book {
       mappedBy = "book",
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<Comment> comments = new ArrayList<>();
+  private List<Review> reviews = new ArrayList<>();
 
   private Integer numberOfReviews = 0;
 

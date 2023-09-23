@@ -1,4 +1,4 @@
-package com.ht.library.comment;
+package com.ht.library.review;
 
 import com.ht.library.handlers.ResponseHandler;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +13,13 @@ import java.util.UUID;
 @Controller
 @RequestMapping("")
 @RequiredArgsConstructor
-public class CommentController {
+public class ReviewController {
 
-  private final CommentService service;
+  private final ReviewService service;
 
-  @GetMapping("/books/{id}/comments")
-  public ResponseEntity<Object> getCommentByBookId(@PathVariable UUID id, Pageable pageable) {
-    return ResponseHandler.generateResponse("OK", HttpStatus.OK, service.getCommentByBookId(id, pageable));
+  @GetMapping("/books/{id}/reviews")
+  public ResponseEntity<Object> getReviewByBookId(@PathVariable UUID id, Pageable pageable) {
+    return ResponseHandler.generateResponse("OK", HttpStatus.OK, service.getReviewByBookId(id, pageable));
   }
 
 //  @PostMapping("/books/{bookId}/comments")

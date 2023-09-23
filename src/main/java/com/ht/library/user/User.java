@@ -2,7 +2,7 @@ package com.ht.library.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ht.library.comment.Comment;
+import com.ht.library.review.Review;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -44,7 +44,7 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   @JsonIgnore
-  private List<Comment> comments = new ArrayList<>();
+  private List<Review> reviews = new ArrayList<>();
 
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")

@@ -1,9 +1,9 @@
-package com.ht.library.comment;
+package com.ht.library.review;
 
 import com.ht.library.book.BookRepository;
 import com.ht.library.book.BookService;
 
-import com.ht.library.comment.dto.CommentResponseDTO;
+import com.ht.library.review.dto.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
@@ -15,18 +15,18 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService{
+public class ReviewServiceImpl implements ReviewService {
 
-  private final CommentRepository repository;
+  private final ReviewRepository repository;
   private final ModelMapper mapper;
   private final BookService bookService;
   private final BookRepository bookRepository;
 
   @Override
-  public List<CommentResponseDTO> getCommentByBookId(UUID bookId, Pageable pageable) {
+  public List<ReviewResponseDTO> getReviewByBookId(UUID bookId, Pageable pageable) {
     return repository.findAllByBookId(bookId, pageable)
         .stream()
-        .map(e ->  mapper.map(e, CommentResponseDTO.class))
+        .map(e ->  mapper.map(e, ReviewResponseDTO.class))
         .collect(Collectors.toList());
   }
 

@@ -53,7 +53,7 @@ public class SecurityConfiguration {
         .requestMatchers(HttpMethod.POST, "/books", "/authors/**").hasAnyAuthority("ADMIN")
         .requestMatchers(HttpMethod.DELETE, "/books", "/authors/**").hasAnyAuthority("ADMIN")
         .requestMatchers(HttpMethod.PATCH, "/books", "/authors/**").hasAnyAuthority("ADMIN")
-        .requestMatchers(HttpMethod.POST, "/books/{id}/comments").authenticated()
+        .requestMatchers(HttpMethod.POST, "/books/{id}/reviews").authenticated()
         .anyRequest()
         .permitAll()
         .and()

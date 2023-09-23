@@ -1,4 +1,4 @@
-package com.ht.library.comment.dto;
+package com.ht.library.review.dto;
 
 import com.ht.library.user.UserDTO;
 import lombok.*;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentResponseDTO {
+public class ReviewResponseDTO {
   private UUID id;
   private String content;
   private Integer rate;

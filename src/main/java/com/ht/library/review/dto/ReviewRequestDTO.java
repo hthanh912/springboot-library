@@ -1,15 +1,13 @@
-package com.ht.library.comment.dto;
+package com.ht.library.review.dto;
 
 import lombok.*;
-
-import java.util.UUID;
 
 @Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentRequestDTO {
+public class ReviewRequestDTO {
   private String content;
   private Integer rate;
 }
