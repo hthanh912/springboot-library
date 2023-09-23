@@ -2,6 +2,8 @@ package com.ht.library.configs;
 
 import com.ht.library.book.Book;
 import com.ht.library.book.dto.BookResponse;
+import com.ht.library.quotes.Quote;
+import com.ht.library.quotes.dto.QuoteResponse;
 import com.ht.library.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -58,6 +60,15 @@ public class ApplicationConfig {
     modelMapper.typeMap(Book.class, BookResponse.class)
       .addMappings(
           mapper -> mapper.map(book -> book.getAuthor().getName(), BookResponse::setAuthor)
+      );
+
+    modelMapper.typeMap(Quote.class, QuoteResponse.class)
+      .addMappings(
+          mapper -> mapper.map(quote -> quote.getBook().getTitle(), QuoteResponse::setBookTitle))
+      .addMappings(
+          mapper -> mapper.map(quote -> quote.getBook().getId(), QuoteResponse::setBookId))
+      .addMappings(
+          mapper -> mapper.map(quote -> quote.getBook().getAuthor(), QuoteResponse::setAuthor)
       );
 
     return modelMapper;
