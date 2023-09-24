@@ -29,7 +29,7 @@ public class Book {
 
   private String title;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   private Author author;
 
   @OneToMany(
