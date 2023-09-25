@@ -15,6 +15,7 @@ public interface BookService {
   List<BookResponse> getAllBook(Pageable pageable);
   BookDetailResponse getBookById(UUID id);
   List<BookResponse> getBookByAuthorId(UUID authorId);
+  List<BookResponse> getBookByGenreId(UUID genreId);
   Book insertBook(BookRequest book);
   void delete(UUID id);
   Book patch(UUID id, Map<String, Object> fields);

@@ -6,6 +6,7 @@ import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookRequest;
 import com.ht.library.book.dto.BookResponse;
 import com.ht.library.exception.ResourceNotFoundException;
+import com.ht.library.genre.GenreRepository;
 import com.ht.library.utils.DateTimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,6 +24,7 @@ public class BookServiceImpl implements BookService {
 
   private final BookRepository bookrepository;
   private final AuthorService authorService;
+  private final GenreRepository genreRepository;
   private final ModelMapper mapper;
 
   @Override
@@ -48,6 +50,14 @@ public class BookServiceImpl implements BookService {
             .stream()
             .map(book -> mapper.map(book, BookResponse.class))
             .toList();
+  }
+
+  @Override
+  public List<BookResponse> getBookByGenreId(UUID genreId) {
+    return bookrepository.findAllByGenreIds(genreId)
+        .stream()
+        .map(book -> mapper.map(book, BookResponse.class))
+        .toList();
   }
 
   @Override

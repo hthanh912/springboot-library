@@ -43,6 +43,15 @@ public class BookController {
     throw new ResourceNotFoundException("Book not found.");
   }
 
+  @GetMapping("/genre/{genreId}")
+  public ResponseEntity<Object> getBookByGenreId(@PathVariable UUID genreId) {
+    var book = bookService.getBookByGenreId(genreId);
+    if (book != null) {
+      return ResponseHandler.generateResponse("Get book successfully.", HttpStatus.OK, book);
+    }
+    throw new ResourceNotFoundException("Book not found.");
+  }
+
   @PostMapping("")
   public ResponseEntity<Object> insertBook(@RequestBody BookRequest book) {
     var insertedBook = bookService.insertBook(book);
