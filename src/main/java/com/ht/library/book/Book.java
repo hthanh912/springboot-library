@@ -8,10 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -37,6 +34,13 @@ public class Book {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<Review> reviews = new ArrayList<>();
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+      name = "book_genre",
+      joinColumns = @JoinColumn(name = "book_id"),
+      inverseJoinColumns = @JoinColumn(name = "genre_id"))
+  private List<Genre> genres = new ArrayList<>();
 
   private Integer numberOfReviews = 0;
 
