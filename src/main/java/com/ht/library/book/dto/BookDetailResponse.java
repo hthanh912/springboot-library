@@ -1,7 +1,7 @@
 package com.ht.library.book.dto;
 
 import com.ht.library.author.Author;
-import com.ht.library.book.Genre;
+import com.ht.library.genre.Genre;
 import lombok.*;
 
 import java.util.Date;

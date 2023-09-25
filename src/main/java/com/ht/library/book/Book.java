@@ -2,6 +2,7 @@ package com.ht.library.book;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ht.library.author.Author;
+import com.ht.library.genre.Genre;
 import com.ht.library.review.Review;
 import jakarta.persistence.*;
 import lombok.*;

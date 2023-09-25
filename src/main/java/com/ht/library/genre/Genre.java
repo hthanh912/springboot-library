@@ -1,6 +1,7 @@
-package com.ht.library.book;
+package com.ht.library.genre;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ht.library.book.Book;
 import jakarta.persistence.*;
 import lombok.*;
 
