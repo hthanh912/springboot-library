@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 
@@ -43,9 +45,9 @@ public class BookController {
     throw new ResourceNotFoundException("Book not found.");
   }
 
-  @GetMapping("/genre/{genreId}")
-  public ResponseEntity<Object> getBookByGenreId(@PathVariable UUID genreId) {
-    var book = bookService.getBookByGenreId(genreId);
+  @GetMapping("/genre")
+  public ResponseEntity<Object> getBookByGenreId(@RequestParam(value = "", required=false) UUID[] genres) {
+    var book = bookService.getBookByGenreId(genres);
     if (book != null) {
       return ResponseHandler.generateResponse("Get book successfully.", HttpStatus.OK, book);
     }

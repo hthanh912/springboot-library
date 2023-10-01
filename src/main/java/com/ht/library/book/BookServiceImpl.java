@@ -53,8 +53,8 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public List<BookResponse> getBookByGenreId(UUID genreId) {
-    return bookrepository.findAllByGenreIds(genreId)
+  public List<BookResponse> getBookByGenreId(UUID[] genreId) {
+    return bookrepository.findBookByQuery()
         .stream()
         .map(book -> mapper.map(book, BookResponse.class))
         .toList();
