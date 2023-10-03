@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewResponseDTO {
+public class ReviewResponse {
   private UUID id;
   private String content;
   private Integer rate;

@@ -3,7 +3,7 @@ package com.ht.library.review;
 import com.ht.library.book.BookRepository;
 import com.ht.library.book.BookService;
 
-import com.ht.library.review.dto.ReviewResponseDTO;
+import com.ht.library.review.dto.ReviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +23,10 @@ public class ReviewServiceImpl implements ReviewService {
   private final BookRepository bookRepository;
 
   @Override
-  public List<ReviewResponseDTO> getReviewByBookId(UUID bookId, Pageable pageable) {
+  public List<ReviewResponse> getReviewByBookId(UUID bookId, Pageable pageable) {
     return repository.findAllByBookId(bookId, pageable)
         .stream()
-        .map(e ->  mapper.map(e, ReviewResponseDTO.class))
+        .map(e ->  mapper.map(e, ReviewResponse.class))
         .collect(Collectors.toList());
   }
 
