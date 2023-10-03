@@ -12,10 +12,10 @@ import java.util.UUID;
 
 @Service
 public interface BookService {
-  List<BookResponse> getAllBook(Pageable pageable);
+  List<BookResponse> getAllBook(UUID authorId, UUID[] genreIds, Pageable pageable);
   BookDetailResponse getBookById(UUID id);
   List<BookResponse> getBookByAuthorId(UUID authorId);
-  List<BookResponse> getBookByGenreId(UUID[] genreId);
+//  List<BookResponse> getBookByGenreId(UUID[] genreId);
   Book insertBook(BookRequest book);
   void delete(UUID id);
   Book patch(UUID id, Map<String, Object> fields);

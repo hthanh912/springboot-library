@@ -5,13 +5,12 @@ import com.ht.library.exception.ResourceNotFoundException;
 import com.ht.library.handlers.ResponseHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,8 +22,12 @@ public class BookController {
   private final BookService bookService;
 
   @GetMapping("")
-  public ResponseEntity<Object> getBooks(Pageable pageable) {
-    return ResponseHandler.generateResponse("Get books", HttpStatus.OK, bookService.getAllBook(pageable));
+  public ResponseEntity<Object> getBooks(
+      @RequestParam(value = "authorId", required = false, defaultValue = "00000000-0000-0000-0000-000000000000") UUID authorId,
+      @RequestParam(value = "genreIds", required = false, defaultValue = "") UUID[] genreIds,
+      @PageableDefault(value = 2, page = 0) Pageable pageable
+  ) {
+    return ResponseHandler.generateResponse("Get books", HttpStatus.OK, bookService.getAllBook(authorId, genreIds, pageable));
   }
 
   @GetMapping("/{id}")
@@ -39,15 +42,6 @@ public class BookController {
   @GetMapping("/author/{authorId}")
   public ResponseEntity<Object> getBookByAuthorId(@PathVariable UUID authorId) {
     var book = bookService.getBookByAuthorId(authorId);
-    if (book != null) {
-      return ResponseHandler.generateResponse("Get book successfully.", HttpStatus.OK, book);
-    }
-    throw new ResourceNotFoundException("Book not found.");
-  }
-
-  @GetMapping("/genre")
-  public ResponseEntity<Object> getBookByGenreId(@RequestParam(value = "", required=false) UUID[] genres) {
-    var book = bookService.getBookByGenreId(genres);
     if (book != null) {
       return ResponseHandler.generateResponse("Get book successfully.", HttpStatus.OK, book);
     }

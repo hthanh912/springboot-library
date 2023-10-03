@@ -28,11 +28,8 @@ public class BookServiceImpl implements BookService {
   private final ModelMapper mapper;
 
   @Override
-  public List<BookResponse> getAllBook(Pageable pageable) {
-    return bookrepository.findAll(pageable)
-        .stream()
-        .map(book -> mapper.map(book, BookResponse.class))
-        .toList();
+  public List<BookResponse> getAllBook(UUID authorId, UUID[] genreIds, Pageable pageable) {
+    return bookrepository.findBookByQuery(authorId, genreIds, pageable).stream().map(book -> mapper.map(book, BookResponse.class)).toList();
   }
 
   @Override
@@ -50,14 +47,6 @@ public class BookServiceImpl implements BookService {
             .stream()
             .map(book -> mapper.map(book, BookResponse.class))
             .toList();
-  }
-
-  @Override
-  public List<BookResponse> getBookByGenreId(UUID[] genreId) {
-    return bookrepository.findBookByQuery()
-        .stream()
-        .map(book -> mapper.map(book, BookResponse.class))
-        .toList();
   }
 
   @Override
