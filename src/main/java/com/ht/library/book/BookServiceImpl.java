@@ -50,13 +50,13 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public Book insertBook(BookRequest bookDTO) {
+  public BookResponse insertBook(BookRequest bookDTO) {
     Book book = mapper.map(bookDTO, Book.class);
     Optional<Author> author = authorService.getAuthorById(bookDTO.getAuthorId());
     if (author.isPresent()) {
       book.setAuthor(author.get());
     }
-    return bookrepository.save(book);
+    return mapper.map(bookrepository.save(book), BookResponse.class);
   }
 
   @Override
@@ -67,7 +67,7 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public Book patch(UUID id, Map<String, Object> fields) {
+  public BookResponse patch(UUID id, Map<String, Object> fields) {
     Book book = bookrepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book id " + id + "not found"));
     fields.forEach((key, value) -> {
       Field field = ReflectionUtils.findField(Book.class, key);
@@ -85,6 +85,6 @@ public class BookServiceImpl implements BookService {
         }
       }
     });
-    return bookrepository.save(book);
+    return mapper.map(bookrepository.save(book), BookResponse.class);
   }
 }
