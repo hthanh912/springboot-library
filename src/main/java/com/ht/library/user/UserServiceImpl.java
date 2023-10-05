@@ -1,7 +1,7 @@
 package com.ht.library.user;
 
 import com.ht.library.configs.cloudinary.FileUpload;
-import com.ht.library.user.dto.UserDetailDTO;
+import com.ht.library.user.dto.UserDetailResponse;
 import com.ht.library.user.dto.UserPatchRequest;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,13 +19,13 @@ public class UserServiceImpl implements UserService{
   private final ModelMapper mapper;
 
   @Override
-  public UserDetailDTO getUser(String username) {
+  public UserDetailResponse getUser(String username) {
     User user = repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    return mapper.map(user, UserDetailDTO.class);
+    return mapper.map(user, UserDetailResponse.class);
   }
 
   @Override
-  public UserDetailDTO updateUser(String username, UserPatchRequest userDto) throws IOException {
+  public UserDetailResponse updateUser(String username, UserPatchRequest userDto) throws IOException {
     User user = repository.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     System.out.println(userDto.getFirstName());
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService{
       String imageURL = fileUpload.uploadFile(userDto.getAvatar(), "users");
       user.setAvatarUrl(imageURL);
     }
-    return mapper.map(repository.save(user), UserDetailDTO.class);
+    return mapper.map(repository.save(user), UserDetailResponse.class);
   }
 
 }

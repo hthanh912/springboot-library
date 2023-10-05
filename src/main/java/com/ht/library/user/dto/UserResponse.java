@@ -1,17 +1,15 @@
 package com.ht.library.user.dto;
 
-import com.ht.library.user.Role;
-import com.ht.library.user.User;
 import lombok.*;
 
 @Data
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public class UserDetailDTO {
-  private String username;
+public class UserResponse {
+  private String id;
   private String firstName;
   private String lastName;
-  private Role role;
   private String avatarUrl;
 }

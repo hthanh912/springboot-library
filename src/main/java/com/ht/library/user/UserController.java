@@ -1,6 +1,6 @@
 package com.ht.library.user;
 
-import com.ht.library.user.dto.UserDetailDTO;
+import com.ht.library.user.dto.UserDetailResponse;
 import com.ht.library.user.dto.UserPatchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class UserController {
   private final UserService service;
 
   @GetMapping("/me")
-  public ResponseEntity<UserDetailDTO> getUserInfo() {
+  public ResponseEntity<UserDetailResponse> getUserInfo() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       String currentUserName = authentication.getName();
@@ -29,7 +29,7 @@ public class UserController {
   }
 
   @PatchMapping("/me")
-  public ResponseEntity<UserDetailDTO> updateUserInfo(@ModelAttribute UserPatchRequest userDto) throws IOException {
+  public ResponseEntity<UserDetailResponse> updateUserInfo(@ModelAttribute UserPatchRequest userDto) throws IOException {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       String currentUserName = authentication.getName();

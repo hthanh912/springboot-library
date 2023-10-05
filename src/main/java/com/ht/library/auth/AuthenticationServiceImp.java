@@ -3,7 +3,7 @@ package com.ht.library.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ht.library.auth.dto.AuthenticationRequest;
 import com.ht.library.auth.dto.AuthenticationResponse;
-import com.ht.library.auth.dto.RegisterRequestDTO;
+import com.ht.library.auth.dto.RegisterRequest;
 import com.ht.library.configs.JwtService;
 import com.ht.library.exception.InvalidUsernameException;
 import com.ht.library.exception.ResourceNotFoundException;
@@ -35,7 +35,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
   private final TokenRepository tokenRepository;
 
   @Override
-  public AuthenticationResponse register(RegisterRequestDTO request) {
+  public AuthenticationResponse register(RegisterRequest request) {
     if (repository.findByUsername(request.getUsername()).isPresent()) {
       throw new InvalidUsernameException("Invalid Username");
     }

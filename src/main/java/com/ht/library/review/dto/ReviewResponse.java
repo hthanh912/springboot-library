@@ -1,6 +1,6 @@
 package com.ht.library.review.dto;
 
-import com.ht.library.user.dto.UserDTO;
+import com.ht.library.user.dto.UserResponse;
 import lombok.*;
 
 import java.util.Date;
@@ -17,5 +17,5 @@ public class ReviewResponse {
   private Integer rate;
   private Date createdAt;
   private Date updatedAt;
-  private UserDTO user;
+  private UserResponse user;
 }

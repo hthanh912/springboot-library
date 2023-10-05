@@ -2,7 +2,7 @@ package com.ht.library.auth;
 
 import com.ht.library.auth.dto.AuthenticationRequest;
 import com.ht.library.auth.dto.AuthenticationResponse;
-import com.ht.library.auth.dto.RegisterRequestDTO;
+import com.ht.library.auth.dto.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class AuthenticationController {
 
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(
-      @RequestBody RegisterRequestDTO request
+      @RequestBody RegisterRequest request
   ) {
     return ResponseEntity.ok(service.register(request));
   }
