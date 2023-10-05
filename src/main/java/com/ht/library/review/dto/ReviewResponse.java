@@ -1,6 +1,6 @@
 package com.ht.library.review.dto;
 
-import com.ht.library.user.UserDTO;
+import com.ht.library.user.dto.UserDTO;
 import lombok.*;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.ht.library.user;
+package com.ht.library.user.dto;
 
 import lombok.*;
 
@@ -11,4 +11,5 @@ public class UserDTO {
   private String id;
   private String firstName;
   private String lastName;
+  private String avatarUrl;
 }
