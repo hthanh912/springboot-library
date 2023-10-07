@@ -2,9 +2,13 @@ package com.ht.library.configs;
 
 import com.ht.library.book.Book;
 import com.ht.library.book.dto.BookResponse;
+import com.ht.library.configs.cloudinary.CloudinaryConfig;
 import com.ht.library.quotes.Quote;
 import com.ht.library.quotes.dto.QuoteResponse;
+import com.ht.library.user.User;
 import com.ht.library.user.UserRepository;
+import com.ht.library.user.dto.UserDetailResponse;
+import com.ht.library.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -56,6 +60,15 @@ public class ApplicationConfig {
 
     modelMapper.getConfiguration()
         .setMatchingStrategy(MatchingStrategies.STRICT);
+
+    modelMapper.typeMap(User.class, UserResponse.class)
+        .addMappings(mapper -> mapper.map(user -> CloudinaryConfig.getImageUrl(user.getAvatarUrl()), UserResponse::setAvatarUrl));
+
+    modelMapper.typeMap(User.class, UserDetailResponse.class)
+            .addMappings(mapper -> {
+              mapper.using(CloudinaryConfig.convertPublicIdToUrl);
+              mapper.map(User::getAvatarUrl, UserDetailResponse::setAvatarUrl);
+            });
 
     modelMapper.typeMap(Book.class, BookResponse.class)
       .addMappings(

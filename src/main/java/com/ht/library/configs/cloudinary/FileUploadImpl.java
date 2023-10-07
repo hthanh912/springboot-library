@@ -22,7 +22,7 @@ public class FileUploadImpl implements FileUpload{
             Map.of(
                 "public_id", UUID.randomUUID().toString(),
                 "folder", "library/" + directory))
-        .get("url")
+            .get("public_id")
         .toString();
   }
 }
