@@ -22,7 +22,12 @@ public class Author {
   @Id
   @Column(name = "author_id")
   private UUID id;
+
+  @Column(name = "name")
   private String name;
+
+  @Column(name = "photo_url")
+  private String photoUrl;
 
   @OneToMany(fetch = FetchType.LAZY,
       mappedBy = "author",
