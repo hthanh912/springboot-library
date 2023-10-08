@@ -28,10 +28,7 @@ public class UserServiceImpl implements UserService{
   public UserDetailResponse updateUser(String username, UserPatchRequest userDto) throws IOException {
     User user = repository.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    System.out.println(userDto.getFirstName());
-
     if (userDto.getFirstName() != null) {
-      System.out.println(userDto.getFirstName());
       user.setFirstName(userDto.getFirstName());
     }
     if (userDto.getLastName() != null) {
