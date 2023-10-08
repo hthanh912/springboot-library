@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    generate-ddl: 'true'
+    properties:
+      hibernate:
+        format_sql: 'true'
+    show-sql: 'true'
+    #drop n create table again, good for testing, comment this in production
+    #spring.jpa.hibernate.ddl-auto=create
+  datasource:
+    username: postgres
+    hikari:
+      connectionTimeout: '20000'
+      maximumPoolSize: '5'
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: huuthanh
+cloudinary:
+  url: cloudinary://149924232464535:bHDB80pKyomXrFyeYxs5AnyAIc0@djmhm13uu
+  cloudName: djmhm13uu
+  apiKey: '149924232464535'
+  apiSecret: bHDB80pKyomXrFyeYxs5AnyAIc0
