@@ -52,10 +52,8 @@ public class BookServiceImpl implements BookService {
   @Override
   public BookResponse insertBook(BookRequest bookDTO) {
     Book book = mapper.map(bookDTO, Book.class);
-    Optional<Author> author = authorService.getAuthorById(bookDTO.getAuthorId());
-    if (author.isPresent()) {
-      book.setAuthor(author.get());
-    }
+    Author author = authorService.getAuthorById(bookDTO.getAuthorId());
+    book.setAuthor(author);
     return mapper.map(bookrepository.save(book), BookResponse.class);
   }
 

@@ -1,5 +1,6 @@
 package com.ht.library.user;
 
+import com.cloudinary.Transformation;
 import com.ht.library.configs.cloudinary.FileUpload;
 import com.ht.library.user.dto.UserDetailResponse;
 import com.ht.library.user.dto.UserPatchRequest;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -35,7 +37,9 @@ public class UserServiceImpl implements UserService{
       user.setLastName(userDto.getLastName());
     }
     if (userDto.getAvatar() != null) {
-      String imageURL = fileUpload.uploadFile(userDto.getAvatar(), "users");
+      String imageURL = fileUpload.uploadFile(userDto.getAvatar(), user.getUsername(), "users",
+          Map.of("transformation", new Transformation().width(500).height(500).crop("fill"))
+      );
       user.setAvatarUrl(imageURL);
     }
     return mapper.map(repository.save(user), UserDetailResponse.class);
