@@ -1,16 +1,14 @@
 package com.ht.library.author;
 
+import com.ht.library.author.dto.AuthorPatchRequest;
 import com.ht.library.author.dto.AuthorResponse;
-import com.ht.library.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -27,10 +25,11 @@ public class AuthorController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Author> getAuthorById(@PathVariable UUID id) {
-    Optional<Author> author = service.getAuthorById(id);
-    if (author.isPresent()){
-      return ResponseEntity.ok(author.get());
-    }
-    throw new ResourceNotFoundException("Author not found");
+    return ResponseEntity.ok(service.getAuthorById(id));
+  }
+
+  @PatchMapping("/{id}")
+  public ResponseEntity<Author> updateAuthor(@PathVariable UUID id, @ModelAttribute AuthorPatchRequest authorDto) throws IOException {
+    return ResponseEntity.ok(service.updateAuthor(id, authorDto));
   }
 }
