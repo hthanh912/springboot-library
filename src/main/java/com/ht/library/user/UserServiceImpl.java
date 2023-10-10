@@ -38,7 +38,8 @@ public class UserServiceImpl implements UserService{
     }
     if (userDto.getAvatar() != null) {
       String imageURL = fileUpload.uploadFile(userDto.getAvatar(), user.getUsername(), "users",
-          Map.of("transformation", new Transformation().width(500).height(500).crop("fill"))
+          Map.of("transformation",
+              new Transformation().width(500).height(500).crop("fill").fetchFormat("auto"))
       );
       user.setAvatarUrl(imageURL);
     }
