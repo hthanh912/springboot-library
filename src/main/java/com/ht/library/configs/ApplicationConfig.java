@@ -1,6 +1,7 @@
 package com.ht.library.configs;
 
 import com.ht.library.author.Author;
+import com.ht.library.author.dto.AuthorDetailResponse;
 import com.ht.library.book.Book;
 import com.ht.library.book.dto.BookResponse;
 import com.ht.library.configs.cloudinary.CloudinaryConfig;
@@ -76,10 +77,10 @@ public class ApplicationConfig {
           mapper -> mapper.map(book -> book.getAuthor().getName(), BookResponse::setAuthor)
       );
 
-    modelMapper.typeMap(Author.class, Author.class)
+    modelMapper.typeMap(Author.class, AuthorDetailResponse.class)
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl);
-          mapper.map(Author::getPhotoUrl, Author::setPhotoUrl);
+          mapper.map(Author::getPhotoUrl, AuthorDetailResponse::setPhotoUrl);
         });
 
     modelMapper.typeMap(Quote.class, QuoteResponse.class)

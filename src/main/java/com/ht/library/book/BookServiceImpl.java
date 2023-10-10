@@ -1,6 +1,7 @@
 package com.ht.library.book;
 
 import com.ht.library.author.Author;
+import com.ht.library.author.AuthorRepository;
 import com.ht.library.author.AuthorService;
 import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookRequest;
@@ -23,7 +24,7 @@ import java.util.*;
 public class BookServiceImpl implements BookService {
 
   private final BookRepository bookrepository;
-  private final AuthorService authorService;
+  private final AuthorRepository authorRepository;
   private final GenreRepository genreRepository;
   private final ModelMapper mapper;
 
@@ -52,7 +53,8 @@ public class BookServiceImpl implements BookService {
   @Override
   public BookResponse insertBook(BookRequest bookDTO) {
     Book book = mapper.map(bookDTO, Book.class);
-    Author author = authorService.getAuthorById(bookDTO.getAuthorId());
+    Author author = authorRepository.findById(bookDTO.getAuthorId())
+        .orElseThrow(() -> new ResourceNotFoundException("Author not found"));
     book.setAuthor(author);
     return mapper.map(bookrepository.save(book), BookResponse.class);
   }
