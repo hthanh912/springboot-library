@@ -1,4 +1,5 @@
 package com.ht.library.book.dto;
+import com.ht.library.author.dto.AuthorResponse;
 import lombok.*;
 
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public class BookResponse {
   private UUID id;
   private String title;
-  private String author;
+  private AuthorResponse author;
   private Integer numberOfReviews;
   private Integer sumOfRating;
 }

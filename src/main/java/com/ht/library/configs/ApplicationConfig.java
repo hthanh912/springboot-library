@@ -72,11 +72,6 @@ public class ApplicationConfig {
               mapper.map(User::getAvatarUrl, UserDetailResponse::setAvatarUrl);
             });
 
-    modelMapper.typeMap(Book.class, BookResponse.class)
-      .addMappings(
-          mapper -> mapper.map(book -> book.getAuthor().getName(), BookResponse::setAuthor)
-      );
-
     modelMapper.typeMap(Author.class, AuthorDetailResponse.class)
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl);

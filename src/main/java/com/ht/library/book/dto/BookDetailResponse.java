@@ -1,7 +1,7 @@
 package com.ht.library.book.dto;
 
-import com.ht.library.author.Author;
-import com.ht.library.genre.Genre;
+import com.ht.library.author.dto.AuthorResponse;
+import com.ht.library.genre.dto.GenreItemResponse;
 import lombok.*;
 
 import java.util.Date;
@@ -16,8 +16,8 @@ import java.util.UUID;
 public class BookDetailResponse {
   private UUID id;
   private String title;
-  private Author author;
-  private List<Genre> genres;
+  private AuthorResponse author;
+  private List<GenreItemResponse> genres;
   private Integer numberOfReviews;
   private Integer sumOfRating;
   private Date createdAt;
