@@ -10,5 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class AuthorPatchRequest {
   private String name;
+  private String description;
   private MultipartFile photo;
 }

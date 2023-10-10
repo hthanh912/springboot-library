@@ -44,6 +44,9 @@ public class AuthorServiceImpl implements AuthorService{
     if (authorDto.getName() != null) {
       author.setName(authorDto.getName());
     }
+    if (authorDto.getDescription() != null) {
+      author.setDescription(authorDto.getDescription());
+    }
     if (authorDto.getPhoto() != null) {
       String fileName = CommonUtils.stringToSnakeCase(author.getName());
       String imageURL = fileUpload.uploadFile(authorDto.getPhoto(), fileName, "authors",
