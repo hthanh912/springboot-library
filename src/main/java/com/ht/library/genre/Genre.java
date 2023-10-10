@@ -24,6 +24,9 @@ public class Genre {
 
   private String name;
 
+  @Column(name = "description", columnDefinition = "TEXT", length = 2048)
+  private String description;
+
   @JsonIgnore
   @ManyToMany(
       mappedBy = "genres",
