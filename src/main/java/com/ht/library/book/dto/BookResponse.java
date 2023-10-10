@@ -12,5 +12,5 @@ public class BookResponse {
   private String title;
   private String author;
   private Integer numberOfReviews;
-  private Integer sumOfRate;
+  private Integer sumOfRating;
 }
