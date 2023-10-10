@@ -45,7 +45,7 @@ public class Book {
 
   private Integer numberOfReviews = 0;
 
-  private Integer sumOfRate = 0;
+  private Integer sumOfRating = 0;
 
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
