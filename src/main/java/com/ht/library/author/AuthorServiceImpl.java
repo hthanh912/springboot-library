@@ -1,10 +1,13 @@
 package com.ht.library.author;
 
 import com.cloudinary.Transformation;
+import com.ht.library.author.dto.AuthorDetailResponse;
 import com.ht.library.author.dto.AuthorPatchRequest;
 import com.ht.library.author.dto.AuthorResponse;
+import com.ht.library.book.Book;
 import com.ht.library.configs.cloudinary.FileUpload;
 import com.ht.library.exception.ResourceNotFoundException;
+import com.ht.library.genre.Genre;
 import com.ht.library.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -33,9 +36,21 @@ public class AuthorServiceImpl implements AuthorService{
   }
 
   @Override
-  public Author getAuthorById(UUID id) {
+  public AuthorDetailResponse getAuthorById(UUID id) {
     Author author = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
-    return mapper.map(author, Author.class);
+    int numberOfReview = 0;
+    int sumOfRating = 0;
+    List<Genre> genres = new ArrayList<>();
+    for (Book book: author.getBooks()) {
+      numberOfReview += book.getNumberOfReviews();
+      sumOfRating += book.getSumOfRating();
+      genres.addAll(book.getGenres());
+    }
+    AuthorDetailResponse authorDetailResponse = mapper.map(author, AuthorDetailResponse.class);
+    authorDetailResponse.setNumberOfReview(numberOfReview);
+    authorDetailResponse.setSumOfRating(sumOfRating);
+    authorDetailResponse.setGenres(genres);
+    return authorDetailResponse;
   }
 
   @Override

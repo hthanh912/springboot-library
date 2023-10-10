@@ -1,5 +1,6 @@
 package com.ht.library.author;
 
+import com.ht.library.author.dto.AuthorDetailResponse;
 import com.ht.library.author.dto.AuthorPatchRequest;
 import com.ht.library.author.dto.AuthorResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class AuthorController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Author> getAuthorById(@PathVariable UUID id) {
+  public ResponseEntity<AuthorDetailResponse> getAuthorById(@PathVariable UUID id) {
     return ResponseEntity.ok(service.getAuthorById(id));
   }
 

@@ -29,6 +29,9 @@ public class Author {
   @Column(name = "description", columnDefinition = "TEXT", length = 2048)
   private String description;
 
+  @Column(name = "born")
+  private String born;
+
   @Column(name = "photo_url")
   private String photoUrl;
 
