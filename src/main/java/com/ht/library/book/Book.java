@@ -44,8 +44,8 @@ public class Book {
   private List<Genre> genres = new ArrayList<>();
 
   private Integer numberOfReviews = 0;
-
-  private Integer sumOfRating = 0;
+  private Integer numberOfRatings = 0;
+  private Integer sumOfRatings = 0;
 
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")

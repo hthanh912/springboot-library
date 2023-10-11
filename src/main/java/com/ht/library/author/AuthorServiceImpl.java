@@ -39,16 +39,16 @@ public class AuthorServiceImpl implements AuthorService{
   public AuthorDetailResponse getAuthorById(UUID id) {
     Author author = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
     int numberOfReview = 0;
-    int sumOfRating = 0;
+    int sumOfRatings = 0;
     List<Genre> genres = new ArrayList<>();
     for (Book book: author.getBooks()) {
       numberOfReview += book.getNumberOfReviews();
-      sumOfRating += book.getSumOfRating();
+      sumOfRatings += book.getSumOfRatings();
       genres.addAll(book.getGenres());
     }
     AuthorDetailResponse authorDetailResponse = mapper.map(author, AuthorDetailResponse.class);
     authorDetailResponse.setNumberOfReview(numberOfReview);
-    authorDetailResponse.setSumOfRating(sumOfRating);
+    authorDetailResponse.setSumOfRatings(sumOfRatings);
     authorDetailResponse.setGenres(genres);
     return authorDetailResponse;
   }
