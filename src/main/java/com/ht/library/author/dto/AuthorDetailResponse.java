@@ -1,6 +1,6 @@
 package com.ht.library.author.dto;
 
-import com.ht.library.genre.Genre;
+import com.ht.library.genre.dto.GenreItemResponse;
 import lombok.*;
 
 import java.util.Date;
@@ -18,9 +18,10 @@ public class AuthorDetailResponse {
   private String description;
   private String born;
   private String photoUrl;
-  private Integer numberOfReview;
-  private Float sumOfRatings;
-  private List<Genre> genres;
+  private Integer numberOfReviews;
+  private Integer numberOfRating;
+  private Float averageRate;
+  private List<GenreItemResponse> genres;
   private Date createdAt;
   private Date updatedAt;
 }
