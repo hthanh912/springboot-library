@@ -19,7 +19,7 @@ public class AuthorDetailResponse {
   private String born;
   private String photoUrl;
   private Integer numberOfReview;
-  private Integer sumOfRatings;
+  private Float sumOfRatings;
   private List<Genre> genres;
   private Date createdAt;
   private Date updatedAt;

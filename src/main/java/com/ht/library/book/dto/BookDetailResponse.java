@@ -19,7 +19,8 @@ public class BookDetailResponse {
   private AuthorResponse author;
   private List<GenreItemResponse> genres;
   private Integer numberOfReviews;
-  private Integer sumOfRatings;
+  private Integer numberOfRatings;
+  private Float averageRate;
   private Date createdAt;
   private Date updatedAt;
 }

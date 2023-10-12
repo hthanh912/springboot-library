@@ -13,5 +13,6 @@ public class BookResponse {
   private String title;
   private AuthorResponse author;
   private Integer numberOfReviews;
-  private Integer sumOfRatings;
+  private Integer numberOfRatings;
+  private Float averageRate;
 }

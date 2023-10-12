@@ -1,12 +1,16 @@
 package com.ht.library.review;
 
 import com.ht.library.book.BookRepository;
-import com.ht.library.book.BookService;
-
+import com.ht.library.exception.ResourceNotFoundException;
+import com.ht.library.review.dto.ReviewRequest;
 import com.ht.library.review.dto.ReviewResponse;
+import com.ht.library.user.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,30 +23,29 @@ public class ReviewServiceImpl implements ReviewService {
 
   private final ReviewRepository repository;
   private final ModelMapper mapper;
-  private final BookService bookService;
   private final BookRepository bookRepository;
 
   @Override
   public List<ReviewResponse> getReviewByBookId(UUID bookId, Pageable pageable) {
-    return repository.findAllByBookId(bookId, pageable)
+    return repository.findByBookId(bookId, pageable)
         .stream()
         .map(e ->  mapper.map(e, ReviewResponse.class))
         .collect(Collectors.toList());
   }
 
-//  @Override
-//  public Comment insertComment(UUID bookId, CommentRequestDTO dto) {
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    Book book = bookService.getBookById(bookId).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-//    book.setNumberOfReviews(book.getNumberOfReviews() + 1);
-//    book.setSumOfRate(book.getSumOfRate() + dto.getRate());
-//    bookRepository.save(book);
-//    Comment comment = Comment.builder()
-//        .book(book)
-//        .user((User) authentication.getPrincipal())
-//        .content(dto.getContent())
-//        .rate(dto.getRate())
-//        .build();
-//    return repository.save(comment);
-//  }
+  @Override
+  @Transactional
+  public ReviewResponse insertReview(UUID bookId, ReviewRequest requestDto) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (!bookRepository.existsById(bookId)) throw new ResourceNotFoundException("Book not found");
+    Review review = Review.builder()
+        .content(requestDto.getContent())
+        .rate(requestDto.getRate())
+        .user((User)authentication.getPrincipal())
+        .book(bookRepository.getReferenceById(bookId))
+        .build();
+    Review insertedReview = repository.save(review);
+    bookRepository.updateBookStatistic(bookId);
+    return mapper.map(insertedReview, ReviewResponse.class);
+  }
 }

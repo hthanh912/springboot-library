@@ -1,7 +1,9 @@
 package com.ht.library.review;
 
+import com.ht.library.review.dto.ReviewRequest;
 import com.ht.library.review.dto.ReviewResponse;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,12 +24,8 @@ public class ReviewController {
     return ResponseEntity.ok(service.getReviewByBookId(id, pageable));
   }
 
-//  @PostMapping("/books/{bookId}/comments")
-//  public ResponseEntity<Object> insertComment(@PathVariable UUID bookId, @RequestBody CommentRequestDTO dto) {
-//    Comment insertedComment = service.insertComment(bookId, dto);
-//    if (insertedComment != null) {
-//      return ResponseHandler.generateResponse("Inserted comment", HttpStatus.OK, null);
-//    } else return ResponseHandler.generateResponse("Failed to insert comment", HttpStatus.BAD_REQUEST, null);
-//  }
-
+  @PostMapping("/books/{bookId}/reviews")
+  public ResponseEntity<ReviewResponse> insertReview(@PathVariable UUID bookId, @RequestBody ReviewRequest reviewDto) {
+    return ResponseEntity.ok(service.insertReview(bookId, reviewDto));
+  }
 }

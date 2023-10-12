@@ -25,7 +25,6 @@ public class BookServiceImpl implements BookService {
 
   private final BookRepository bookrepository;
   private final AuthorRepository authorRepository;
-  private final GenreRepository genreRepository;
   private final ModelMapper mapper;
 
   @Override

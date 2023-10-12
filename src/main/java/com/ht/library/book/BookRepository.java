@@ -1,6 +1,7 @@
 package com.ht.library.book;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 
     @Query(value =
         "SELECT " +
-            "b.book_id, b.title, b.number_of_reviews, b.sum_of_rating, b.author_author_id, au.author_id, au.name, b.created_at, b.updated_at, array_agg(b_g.genre_id) as genres " +
+            "b.book_id, b.title, b.number_of_reviews, b.number_of_ratings, b.average_rate, b.author_author_id, au.author_id, au.name, b.created_at, b.updated_at, array_agg(b_g.genre_id) as genres " +
         "FROM books b " +
         "LEFT JOIN authors au " +
             "ON au.author_id = b.author_author_id " +
@@ -31,4 +32,20 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
         nativeQuery = true
     )
     List<Book> findBookByQuery(@Param("authorId") UUID authorId,@Param("genreIds") UUID[] genreIds, Pageable pageable);
+
+    @Modifying
+    @Query(value =
+        "UPDATE books b " +
+        "SET number_of_ratings = (SELECT COUNT(book_book_id) " +
+                                    "FROM reviews r " +
+                                    "WHERE r.book_book_id = :bookId), " +
+            "average_rate = (SELECT AVG(rate) " +
+                            "FROM reviews r " +
+                            "WHERE r.book_book_id = :bookId), " +
+            "number_of_reviews = (SELECT COUNT(book_book_id) " +
+                                    "FROM reviews r " +
+                                    "WHERE r.book_book_id = :bookId and r.content is not null) " +
+        "WHERE b.book_id = :bookId",
+    nativeQuery = true)
+    void updateBookStatistic(@Param("bookId") UUID bookId);
 }
