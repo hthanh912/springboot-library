@@ -26,7 +26,7 @@ public class Author {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "description", columnDefinition = "TEXT", length = 2048)
+  @Column(name = "description", length = 2048)
   private String description;
 
   @Column(name = "born")
