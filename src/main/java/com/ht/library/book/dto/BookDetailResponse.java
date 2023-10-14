@@ -4,6 +4,7 @@ import com.ht.library.author.dto.AuthorResponse;
 import com.ht.library.genre.dto.GenreItemResponse;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,9 @@ import java.util.UUID;
 public class BookDetailResponse {
   private UUID id;
   private String title;
+  private String description;
+  private String coverUrl;
+  private LocalDate publishedDate;
   private AuthorResponse author;
   private List<GenreItemResponse> genres;
   private Integer numberOfReviews;

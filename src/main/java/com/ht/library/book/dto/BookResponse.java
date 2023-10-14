@@ -11,6 +11,7 @@ import java.util.UUID;
 public class BookResponse {
   private UUID id;
   private String title;
+  private String coverUrl;
   private AuthorResponse author;
   private Integer numberOfReviews;
   private Integer numberOfRatings;

@@ -15,7 +15,8 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 
     @Query(value =
         "SELECT " +
-            "b.book_id, b.title, b.number_of_reviews, b.number_of_ratings, b.average_rate, b.author_author_id, au.author_id, au.name, b.created_at, b.updated_at, array_agg(b_g.genre_id) as genres " +
+            "b.book_id, b.title, b.description, b.cover_url, b.number_of_reviews, b.number_of_ratings, b.average_rate, b.author_author_id, " +
+            "au.author_id, au.name, b.created_at, b.updated_at, array_agg(b_g.genre_id) as genres " +
         "FROM books b " +
         "LEFT JOIN authors au " +
             "ON au.author_id = b.author_author_id " +

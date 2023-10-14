@@ -1,7 +1,9 @@
 package com.ht.library.book.dto;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -13,5 +15,8 @@ import java.util.UUID;
 public class BookRequest {
   private UUID id;
   private String title;
+  private String description;
+  private MultipartFile cover;
   private UUID authorId;
+  private LocalDate publishedDate;
 }

@@ -9,6 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Data
@@ -26,6 +27,15 @@ public class Book {
   private UUID id;
 
   private String title;
+
+  private String coverUrl;
+
+  @Column(name = "description", length = 2048)
+  private String description;
+
+  @Column(name = "published_date")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+  private LocalDate publishedDate;
 
   @ManyToOne(fetch = FetchType.EAGER)
   private Author author;

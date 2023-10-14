@@ -12,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -51,8 +51,8 @@ public class BookController {
   }
 
   @PostMapping("")
-  public ResponseEntity<BookResponse> insertBook(@RequestBody BookRequest book) {
-    var insertedBook = bookService.insertBook(book);
+  public ResponseEntity<BookResponse> insertBook(@ModelAttribute BookRequest bookDto) throws IOException {
+    var insertedBook = bookService.insertBook(bookDto);
     return new ResponseEntity<>(insertedBook, HttpStatus.CREATED);
   }
 
@@ -63,8 +63,8 @@ public class BookController {
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<BookResponse> patch(@PathVariable UUID id, @RequestBody Map<String, Object> fields) {
-    var book = bookService.patch(id, fields);
+  public ResponseEntity<BookResponse> patch(@PathVariable UUID id, @ModelAttribute BookRequest bookDto) throws IOException {
+    var book = bookService.patch(id, bookDto);
     return new ResponseEntity<>(book, HttpStatus.OK);
   }
 }

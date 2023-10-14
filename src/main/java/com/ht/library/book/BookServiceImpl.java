@@ -1,22 +1,19 @@
 package com.ht.library.book;
 
-import com.ht.library.author.Author;
+import com.cloudinary.Transformation;
 import com.ht.library.author.AuthorRepository;
-import com.ht.library.author.AuthorService;
 import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookRequest;
 import com.ht.library.book.dto.BookResponse;
+import com.ht.library.configs.cloudinary.FileUpload;
 import com.ht.library.exception.ResourceNotFoundException;
-import com.ht.library.genre.GenreRepository;
-import com.ht.library.utils.DateTimeUtils;
+import com.ht.library.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
-import java.text.ParseException;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -26,6 +23,7 @@ public class BookServiceImpl implements BookService {
   private final BookRepository bookrepository;
   private final AuthorRepository authorRepository;
   private final ModelMapper mapper;
+  private  final FileUpload fileUpload;
 
   @Override
   public List<BookResponse> getAllBook(UUID authorId, UUID[] genreIds, Pageable pageable) {
@@ -50,11 +48,17 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public BookResponse insertBook(BookRequest bookDTO) {
+  public BookResponse insertBook(BookRequest bookDTO) throws IOException {
     Book book = mapper.map(bookDTO, Book.class);
-    Author author = authorRepository.findById(bookDTO.getAuthorId())
-        .orElseThrow(() -> new ResourceNotFoundException("Author not found"));
-    book.setAuthor(author);
+    if (!authorRepository.existsById(bookDTO.getAuthorId())) throw new ResourceNotFoundException("Author not found");
+    book.setAuthor(authorRepository.getReferenceById(bookDTO.getAuthorId()));
+    if (bookDTO.getCover() != null) {
+      String fileName = CommonUtils.stringToSnakeCase(book.getTitle());
+      String imageURL = fileUpload.uploadFile(bookDTO.getCover(), fileName, "books",
+          Map.of("transformation", new Transformation().fetchFormat("auto"))
+      );
+      book.setCoverUrl(imageURL);
+    }
     return mapper.map(bookrepository.save(book), BookResponse.class);
   }
 
@@ -66,24 +70,24 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public BookResponse patch(UUID id, Map<String, Object> fields) {
+  public BookResponse patch(UUID id, BookRequest bookDTO) throws IOException {
     Book book = bookrepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book id " + id + "not found"));
-    fields.forEach((key, value) -> {
-      Field field = ReflectionUtils.findField(Book.class, key);
-      if (field != null) {
-        field.setAccessible(true);
-        if (field.getType() == Date.class) {
-
-          try {
-            ReflectionUtils.setField(field, book, DateTimeUtils.dateFromString(value.toString()));
-          } catch (ParseException e) {
-            throw new RuntimeException(e);
-          }
-        } else {
-          ReflectionUtils.setField(field, book, value);
-        }
-      }
-    });
+    if (bookDTO.getTitle() != null) {
+      book.setTitle(bookDTO.getTitle());
+    }
+    if (bookDTO.getDescription() != null) {
+      book.setDescription(bookDTO.getDescription());
+    }
+    if (bookDTO.getPublishedDate() != null) {
+      book.setPublishedDate(bookDTO.getPublishedDate());
+    }
+    if (bookDTO.getCover() != null) {
+      String fileName = CommonUtils.stringToSnakeCase(book.getTitle());
+      String imageURL = fileUpload.uploadFile(bookDTO.getCover(), fileName, "books",
+          Map.of("transformation", new Transformation().fetchFormat("auto"))
+      );
+      book.setCoverUrl(imageURL);
+    }
     return mapper.map(bookrepository.save(book), BookResponse.class);
   }
 }

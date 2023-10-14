@@ -3,6 +3,7 @@ package com.ht.library.configs;
 import com.ht.library.author.Author;
 import com.ht.library.author.dto.AuthorDetailResponse;
 import com.ht.library.book.Book;
+import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookResponse;
 import com.ht.library.configs.cloudinary.CloudinaryConfig;
 import com.ht.library.quotes.Quote;
@@ -64,18 +65,33 @@ public class ApplicationConfig {
         .setMatchingStrategy(MatchingStrategies.STRICT);
 
     modelMapper.typeMap(User.class, UserResponse.class)
-        .addMappings(mapper -> mapper.map(user -> CloudinaryConfig.getImageUrl(user.getAvatarUrl()), UserResponse::setAvatarUrl));
+        .addMappings(mapper -> {
+          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
+          mapper.map(User::getAvatarUrl, UserResponse::setAvatarUrl);
+        });
 
     modelMapper.typeMap(User.class, UserDetailResponse.class)
             .addMappings(mapper -> {
-              mapper.using(CloudinaryConfig.convertPublicIdToUrl);
+              mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
               mapper.map(User::getAvatarUrl, UserDetailResponse::setAvatarUrl);
             });
 
     modelMapper.typeMap(Author.class, AuthorDetailResponse.class)
         .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl);
+          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
           mapper.map(Author::getPhotoUrl, AuthorDetailResponse::setPhotoUrl);
+        });
+
+    modelMapper.typeMap(Book.class, BookResponse.class)
+        .addMappings(mapper -> {
+          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
+          mapper.map(Book::getCoverUrl, BookResponse::setCoverUrl);
+        });
+
+    modelMapper.typeMap(Book.class, BookDetailResponse.class)
+        .addMappings(mapper -> {
+          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
+          mapper.map(Book::getCoverUrl, BookDetailResponse::setCoverUrl);
         });
 
     modelMapper.typeMap(Quote.class, QuoteResponse.class)
