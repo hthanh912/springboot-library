@@ -23,6 +23,6 @@ public class GenreServiceImpl implements GenreService{
 
   @Override
   public List<BookResponse> getBookByGenreId(UUID genreId, Pageable pageable) {
-    return bookService.getAllBook(new UUID(0L, 0L), new UUID[]{genreId}, pageable);
+    return bookService.getAllBook(UUID.fromString("00000000-0000-0000-0000-000000000000"), new UUID[]{genreId}, pageable);
   }
 }

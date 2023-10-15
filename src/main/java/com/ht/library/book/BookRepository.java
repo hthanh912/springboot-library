@@ -1,4 +1,5 @@
 package com.ht.library.book;
+import com.ht.library.book.dto.BookView;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,18 +12,25 @@ import java.util.UUID;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, UUID> {
-    List<Book> findAllByAuthorId(UUID authorId);
 
     @Query(value =
         "SELECT " +
-            "b.book_id, b.title, b.description, b.cover_url, b.number_of_reviews, b.number_of_ratings, b.average_rate, b.author_author_id, " +
-            "au.author_id, au.name, b.created_at, b.updated_at, array_agg(b_g.genre_id) as genres " +
+            "b.book_id AS id, " +
+            "b.title AS title, " +
+            "b.cover_url AS coverUrl, " +
+            "b.number_of_reviews AS numberOfReviews, " +
+            "b.number_of_ratings AS numberOfRatings, " +
+            "b.average_rate AS averageRate, " +
+            "array_agg(b_g.genre_id) AS genres, " +
+            "jsonb_build_object('id', au.author_id, 'name', au.name) AS author, " +
+            "au.author_id AS authorId, " +
+            "au.name AS authorName " +
         "FROM books b " +
         "LEFT JOIN authors au " +
             "ON au.author_id = b.author_author_id " +
         "LEFT JOIN book_genre b_g " +
             "ON b_g.book_id = b.book_id " +
-        "WHERE " + "" +
+        "WHERE " +
             ":authorId = '00000000-0000-0000-0000-000000000000' " +
             "OR au.author_id = :authorId " +
         "GROUP BY b.book_id, au.author_id, au.name " +
@@ -32,7 +40,8 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
         countQuery = "SELECT count(b.book_id) FROM books b",
         nativeQuery = true
     )
-    List<Book> findBookByQuery(@Param("authorId") UUID authorId,@Param("genreIds") UUID[] genreIds, Pageable pageable);
+    List<BookView> findByQuery(@Param("authorId") UUID authorId, @Param("genreIds") UUID[] genreIds, Pageable pageable);
+
 
     @Modifying
     @Query(value =

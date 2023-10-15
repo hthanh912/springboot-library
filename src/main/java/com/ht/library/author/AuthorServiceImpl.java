@@ -4,10 +4,8 @@ import com.cloudinary.Transformation;
 import com.ht.library.author.dto.AuthorDetailResponse;
 import com.ht.library.author.dto.AuthorPatchRequest;
 import com.ht.library.author.dto.AuthorResponse;
-import com.ht.library.book.Book;
 import com.ht.library.configs.cloudinary.FileUpload;
 import com.ht.library.exception.ResourceNotFoundException;
-import com.ht.library.genre.dto.GenreItemResponse;
 import com.ht.library.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,23 +34,7 @@ public class AuthorServiceImpl implements AuthorService{
 
   @Override
   public AuthorDetailResponse getAuthorById(UUID id) {
-    Author author = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
-    int numberOfReviews = 0;
-    int numberOfRatings = 0;
-    float sumOfRatings = 0F;
-    List<GenreItemResponse> genres = new ArrayList<>();
-    for (Book book: author.getBooks()) {
-      numberOfReviews += book.getNumberOfReviews();
-      numberOfRatings += book.getNumberOfRatings();
-      sumOfRatings += book.getNumberOfRatings() * book.getAverageRate();
-      genres.addAll(book.getGenres().stream().map(genre -> mapper.map(genre, GenreItemResponse.class)).toList());
-    }
-    AuthorDetailResponse authorDetailResponse = mapper.map(author, AuthorDetailResponse.class);
-    authorDetailResponse.setNumberOfReviews(numberOfReviews);
-    authorDetailResponse.setNumberOfRating(numberOfRatings);
-    authorDetailResponse.setAverageRate(sumOfRatings / numberOfRatings);
-    authorDetailResponse.setGenres(genres);
-    return authorDetailResponse;
+    return mapper.map(repository.findAuthorDetailById(id), AuthorDetailResponse.class);
   }
 
   @Override

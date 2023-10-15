@@ -1,8 +1,8 @@
 package com.ht.library.book;
 
+import com.ht.library.book.dto.BookResponse;
 import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookRequest;
-import com.ht.library.book.dto.BookResponse;
 import com.ht.library.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +27,7 @@ public class BookController {
   public ResponseEntity<List<BookResponse>> getBooks(
       @RequestParam(value = "authorId", required = false, defaultValue = "00000000-0000-0000-0000-000000000000") UUID authorId,
       @RequestParam(value = "genreIds", required = false, defaultValue = "") UUID[] genreIds,
-      @PageableDefault(value = 2, page = 0) Pageable pageable
+      @PageableDefault(value = 10, page = 0) Pageable pageable
   ) {
     return new ResponseEntity<>(bookService.getAllBook(authorId, genreIds, pageable), HttpStatus.OK);
   }
@@ -42,12 +42,10 @@ public class BookController {
   }
 
   @GetMapping("/author/{authorId}")
-  public ResponseEntity<List<BookResponse>> getBookByAuthorId(@PathVariable UUID authorId) {
-    var book = bookService.getBookByAuthorId(authorId);
-    if (book != null) {
-      return new ResponseEntity<>(book, HttpStatus.OK);
-    }
-    throw new ResourceNotFoundException("Book not found.");
+  public ResponseEntity<List<BookResponse>> getBookByAuthorId(
+      @PathVariable UUID authorId,
+      @PageableDefault(value = 10, page = 0) Pageable pageable) {
+    return new ResponseEntity<>(bookService.getAllBook(authorId, new UUID[]{}, pageable), HttpStatus.OK);
   }
 
   @PostMapping("")

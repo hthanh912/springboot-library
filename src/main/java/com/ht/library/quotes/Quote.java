@@ -3,12 +3,10 @@ package com.ht.library.quotes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ht.library.book.Book;
-import com.ht.library.book.dto.BookResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.UUID;

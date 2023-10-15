@@ -14,7 +14,6 @@ import java.util.UUID;
 public interface BookService {
   List<BookResponse> getAllBook(UUID authorId, UUID[] genreIds, Pageable pageable);
   BookDetailResponse getBookById(UUID id);
-  List<BookResponse> getBookByAuthorId(UUID authorId);
   BookResponse insertBook(BookRequest book) throws IOException;
   void delete(UUID id);
   BookResponse patch(UUID id, BookRequest bookDto) throws IOException;

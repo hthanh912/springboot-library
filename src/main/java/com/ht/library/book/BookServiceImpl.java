@@ -2,9 +2,9 @@ package com.ht.library.book;
 
 import com.cloudinary.Transformation;
 import com.ht.library.author.AuthorRepository;
+import com.ht.library.book.dto.BookResponse;
 import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookRequest;
-import com.ht.library.book.dto.BookResponse;
 import com.ht.library.configs.cloudinary.FileUpload;
 import com.ht.library.exception.ResourceNotFoundException;
 import com.ht.library.utils.CommonUtils;
@@ -27,7 +27,10 @@ public class BookServiceImpl implements BookService {
 
   @Override
   public List<BookResponse> getAllBook(UUID authorId, UUID[] genreIds, Pageable pageable) {
-    return bookrepository.findBookByQuery(authorId, genreIds, pageable).stream().map(book -> mapper.map(book, BookResponse.class)).toList();
+    return bookrepository.findByQuery(authorId, genreIds, pageable)
+        .stream()
+        .map(book -> mapper.map(book, BookResponse.class))
+        .toList();
   }
 
   @Override
@@ -37,14 +40,6 @@ public class BookServiceImpl implements BookService {
       return mapper.map(book.get(), BookDetailResponse.class);
     }
     return null;
-  }
-
-  @Override
-  public List<BookResponse> getBookByAuthorId(UUID authorId) {
-    return bookrepository.findAllByAuthorId(authorId)
-            .stream()
-            .map(book -> mapper.map(book, BookResponse.class))
-            .toList();
   }
 
   @Override
