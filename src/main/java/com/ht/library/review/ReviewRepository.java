@@ -11,5 +11,10 @@ import java.util.UUID;
 
 @Repository
 interface ReviewRepository extends JpaRepository<Review, UUID> {
-  List<Review> findByBookId(UUID bookId, Pageable pageable);
+  @Query(value =
+      "SELECT v " +
+      "FROM Review v " +
+      "JOIN FETCH v.user u " +
+      "WHERE v.book.id = :bookId ")
+  List<Review> findByBookId(@Param("bookId") UUID bookId, Pageable pageable);
 }
