@@ -23,7 +23,6 @@ public class Quote {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "quote_id")
-    @JsonIgnore
     private UUID id;
 
     private String content;
@@ -34,11 +33,9 @@ public class Quote {
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonIgnore
     private Date createdAt;
 
     @UpdateTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonIgnore
     private Date updatedAt;
 }

@@ -1,6 +1,6 @@
 package com.ht.library.quotes;
 
-import com.ht.library.quotes.dto.QuoteResponse;
+import com.ht.library.quotes.dto.QuoteView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,7 +20,7 @@ public class QuoteController {
     private final QuoteService service;
 
     @GetMapping("")
-    public ResponseEntity<List<QuoteResponse>> getAllQuotes(@PageableDefault(value = 10, page = 0) Pageable pageable) {
+    public ResponseEntity<List<QuoteView>> getAllQuotes(@PageableDefault(value = 10, page = 0) Pageable pageable) {
         return ResponseEntity.ok(service.getAllQuotes(pageable));
     }
 

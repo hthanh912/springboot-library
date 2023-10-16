@@ -7,8 +7,6 @@ import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookResponse;
 import com.ht.library.book.dto.BookView;
 import com.ht.library.configs.cloudinary.CloudinaryConfig;
-import com.ht.library.quotes.Quote;
-import com.ht.library.quotes.dto.QuoteResponse;
 import com.ht.library.user.User;
 import com.ht.library.user.UserRepository;
 import com.ht.library.user.dto.UserDetailResponse;
@@ -112,15 +110,6 @@ public class ApplicationConfig {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
           mapper.map(AuthorDetailView::getPhotoUrl, AuthorDetailResponse::setPhotoUrl);
         });
-
-    modelMapper.typeMap(Quote.class, QuoteResponse.class)
-      .addMappings(
-          mapper -> mapper.map(quote -> quote.getBook().getTitle(), QuoteResponse::setBookTitle))
-      .addMappings(
-          mapper -> mapper.map(quote -> quote.getBook().getId(), QuoteResponse::setBookId))
-      .addMappings(
-          mapper -> mapper.map(quote -> quote.getBook().getAuthor(), QuoteResponse::setAuthor)
-      );
 
     return modelMapper;
   }

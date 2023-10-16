@@ -1,7 +1,7 @@
 package com.ht.library.quotes;
 
 import com.ht.library.exception.ResourceNotFoundException;
-import com.ht.library.quotes.dto.QuoteResponse;
+import com.ht.library.quotes.dto.QuoteView;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +17,8 @@ public class QuoteServiceImpl implements QuoteService{
     private final QuoteRepository repository;
     private final ModelMapper modelMapper;
     @Override
-    public List<QuoteResponse> getAllQuotes(Pageable pageable) {
-        return repository.findAll(pageable).stream().map(quote -> modelMapper.map(quote, QuoteResponse.class)).toList();
+    public List<QuoteView> getAllQuotes(Pageable pageable) {
+        return repository.findAllQuotes(pageable);
     }
 
     @Override
