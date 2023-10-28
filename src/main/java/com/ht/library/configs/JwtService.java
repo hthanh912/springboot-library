@@ -8,7 +8,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +25,8 @@ public class JwtService {
   private final TokenRepository tokenRepository;
   private final String SECRET_KEY = "482B4D6251655468576D5A7134743777217A25432646294A404E635266556A58";
 
-  private final Integer jwtExpiration = 3600000; // 1h
-  private final Integer refreshExpiration = 86400000; // 1d
+  private final Integer jwtExpiration = 7200000; // 2h
+  private final Integer refreshExpiration = 259200000; // 3d
   public String extractUsername(String token){
     return extractClaim(token, Claims::getSubject);
   }
@@ -78,6 +77,14 @@ public class JwtService {
     Optional<Token> toke = tokenRepository.findByToken(token);
     if (toke.isPresent()) {
       return extractExpiration(token).before(new Date()) || toke.get().expired;
+    }
+    return true;
+  }
+
+  public boolean isRefreshTokenExpired(String refreshToken) {
+    Optional<Token> token = tokenRepository.findByRefreshToken(refreshToken);
+    if (token.isPresent()) {
+      return extractExpiration(refreshToken).before(new Date()) || token.get().expired;
     }
     return true;
   }

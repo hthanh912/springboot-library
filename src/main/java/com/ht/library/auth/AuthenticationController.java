@@ -4,12 +4,10 @@ import com.ht.library.auth.dto.AuthenticationRequest;
 import com.ht.library.auth.dto.AuthenticationResponse;
 import com.ht.library.auth.dto.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("auth")
@@ -33,11 +31,11 @@ public class AuthenticationController {
   }
 
   @PostMapping("/refresh-token")
-  public void refreshToken(
-      HttpServletRequest request,
-      HttpServletResponse response
-  ) throws IOException {
-    service.refreshToken(request, response);
+  public ResponseEntity<AuthenticationResponse> refreshToken(
+      HttpServletRequest request
+  ) {
+    var response = service.refreshToken(request);
+    return (response != null) ? ResponseEntity.ok(response) : new ResponseEntity(HttpStatus.UNAUTHORIZED);
   }
 
 }
