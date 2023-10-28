@@ -52,7 +52,9 @@ LEFT JOIN genres g ON g.genre_id = b_g.genre_id
 WHERE a.author_id = '6a39b1d5-5f57-4781-b7e8-06584792e40e'
 GROUP BY a.author_id
 
-{4070427f-eab6-41d5-84d0-fdf58a783e7f,
-41053c4e-e7f2-462f-9dd6-8755704691f6,
-4070427f-eab6-41d5-84d0-fdf58a783e7f}
-{4070427f-eab6-41d5-84d0-fdf58a783e7f,41053c4e-e7f2-462f-9dd6-8755704691f6}
+SELECT q.quote_id AS id, q.content AS content, q.created_at AS createdAt, q.updated_at AS updatedAt,
+	b.book_id AS bookId, b.title AS bookTitle, a.author_id, a.name
+FROM quotes q
+LEFT JOIN books b ON b.book_id = q.book_book_id
+LEFT JOIN authors a ON a.author_id = b.author_author_id
+
