@@ -1,7 +1,9 @@
 package com.ht.library.user;
 
 import com.cloudinary.Transformation;
+import com.ht.library.book.dto.BookResponse;
 import com.ht.library.configs.cloudinary.FileUpload;
+import com.ht.library.exception.ResourceNotFoundException;
 import com.ht.library.user.dto.UserDetailResponse;
 import com.ht.library.user.dto.UserPatchRequest;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -46,4 +50,24 @@ public class UserServiceImpl implements UserService{
     return mapper.map(repository.save(user), UserDetailResponse.class);
   }
 
+  @Override
+  public List<BookResponse> getUserFavoriteBooks(String username) {
+    User user = repository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found."));
+    return user.getUserBooks().stream()
+            .filter(UserBook::isFavorite)
+            .map(userBook -> mapper.map(userBook.getBook(), BookResponse.class))
+            .toList();
+  }
+
+  @Override
+  public List<BookResponse> getUserReading(String username, ReadingStatus[] readingStatuses) {
+    User user = repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    return user.getUserBooks().stream()
+            .filter(userBook -> readingStatuses.length == 0
+                    ? userBook.getReadingStatus() != null
+                    : Arrays.stream(readingStatuses).toList().contains(userBook.getReadingStatus())
+            )
+            .map(userBook -> mapper.map(userBook.getBook(), BookResponse.class))
+            .toList();
+  }
 }

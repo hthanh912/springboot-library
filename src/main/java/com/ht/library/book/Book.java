@@ -1,9 +1,11 @@
 package com.ht.library.book;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ht.library.author.Author;
 import com.ht.library.genre.Genre;
 import com.ht.library.review.Review;
+import com.ht.library.user.UserBook;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -52,6 +54,10 @@ public class Book {
       joinColumns = @JoinColumn(name = "book_id"),
       inverseJoinColumns = @JoinColumn(name = "genre_id"))
   private List<Genre> genres = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "book")
+  Set<UserBook> userBooks;
 
   private Integer numberOfReviews = 0;
   private Integer numberOfRatings = 0;

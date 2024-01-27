@@ -49,6 +49,10 @@ public class User implements UserDetails {
   @JsonIgnore
   private List<Review> reviews = new ArrayList<>();
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  Set<UserBook> userBooks;
+
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private Date createdAt;
