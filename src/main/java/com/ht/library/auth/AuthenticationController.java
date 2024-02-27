@@ -35,7 +35,7 @@ public class AuthenticationController {
       HttpServletRequest request
   ) {
     var response = service.refreshToken(request);
-    return (response != null) ? ResponseEntity.ok(response) : new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    return (response != null) ? ResponseEntity.ok(response) : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
   }
 
 }

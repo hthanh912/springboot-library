@@ -27,6 +27,7 @@ public class LogoutService implements LogoutHandler {
       Authentication authentication
   ) {
     final String authHeader = request.getHeader("Authorization");
+    System.out.println("authHeader: " + authHeader);
     final String jwt;
     if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
       return;
@@ -35,23 +36,26 @@ public class LogoutService implements LogoutHandler {
     var storedToken = tokenRepository.findByToken(jwt)
         .orElse(null);
 
+    var map = new HashMap<String, Object>();
     if (storedToken != null) {
       storedToken.setExpired(true);
       storedToken.setRevoked(true);
       tokenRepository.save(storedToken);
       SecurityContextHolder.clearContext();
-
-      var map = new HashMap<String, Object>();
       map.put("message", "Logout successfully");
       map.put("status", HttpStatus.OK.value());
-      var gson = new Gson();
-      var responseString = gson.toJson(map);
-      response.setContentType("application/json");
-      try {
-        response.getWriter().write(responseString);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+    } else {
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      map.put("message", "Token not found");
+      map.put("status", HttpStatus.BAD_REQUEST.value());
+    }
+    var gson = new Gson();
+    var responseString = gson.toJson(map);
+    response.setContentType("application/json");
+    try {
+      response.getWriter().write(responseString);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 }
