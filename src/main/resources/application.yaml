@@ -8,12 +8,9 @@ spring:
     #drop n create table again, good for testing, comment this in production
     #spring.jpa.hibernate.ddl-auto=create
   datasource:
-    username: postgres
-    hikari:
-      connectionTimeout: '20000'
-      maximumPoolSize: '5'
-    url: jdbc:postgresql://localhost:5432/postgres
-    password: huuthanh
+    url: jdbc:postgresql://ep-shy-salad-a1y03nrr.ap-southeast-1.pg.koyeb.app/koyebdb
+    username: koyeb-adm
+    password: bSWV0vAIj7Xf
 cloudinary:
   url: cloudinary://149924232464535:bHDB80pKyomXrFyeYxs5AnyAIc0@djmhm13uu
   cloudName: djmhm13uu
