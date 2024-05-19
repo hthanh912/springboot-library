@@ -35,7 +35,7 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
             "OR au.author_id = :authorId " +
         "GROUP BY b.book_id, au.author_id, au.name " +
         "HAVING " +
-            ":genreIds IS NULL " +
+            ":genreIds = '{}' " +
             "OR array_agg(b_g.genre_id) && :genreIds",
         countQuery = "SELECT count(b.book_id) FROM books b",
         nativeQuery = true
