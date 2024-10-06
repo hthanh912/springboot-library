@@ -9,9 +9,9 @@ import java.util.UUID;
 public interface AuthorDetailView {
   UUID getId();
   String getName();
-  String getDescription();
+  String getAbout();
   String getBorn();
-  String getPhotoUrl();
+  String getImageUrl();
   Integer getNumberOfReviews();
   Integer getNumberOfRatings();
   Float getAverageRate();

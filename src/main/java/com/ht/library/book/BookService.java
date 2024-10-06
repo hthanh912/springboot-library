@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Service
 public interface BookService {
-  List<BookResponse> getAllBook(UUID authorId, UUID[] genreIds, Pageable pageable);
+  List<BookResponse> getAllBook(UUID authorId, String[] genreIds, Pageable pageable);
   BookDetailResponse getBookById(UUID id);
   BookResponse insertBook(BookRequest book) throws IOException;
   void delete(UUID id);

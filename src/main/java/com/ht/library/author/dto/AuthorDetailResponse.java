@@ -15,9 +15,9 @@ import java.util.UUID;
 public class AuthorDetailResponse {
   private UUID id;
   private String name;
-  private String description;
+  private String about;
   private String born;
-  private String photoUrl;
+  private String imageUrl;
   private Integer numberOfReviews;
   private Integer numberOfRatings;
   private Float averageRate;

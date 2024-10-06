@@ -10,6 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenreItemResponse {
-  private UUID id;
+  private String id;
   private String name;
 }

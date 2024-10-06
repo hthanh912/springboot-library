@@ -6,6 +6,7 @@ import com.ht.library.author.dto.AuthorPatchRequest;
 import com.ht.library.author.dto.AuthorResponse;
 import com.ht.library.configs.cloudinary.FileUpload;
 import com.ht.library.exception.ResourceNotFoundException;
+import com.ht.library.genre.Genre;
 import com.ht.library.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -33,18 +34,23 @@ public class AuthorServiceImpl implements AuthorService{
   }
 
   @Override
-  public AuthorDetailResponse getAuthorById(UUID id) {
+  public AuthorDetailResponse getAuthorById(Integer id) {
     return mapper.map(repository.findAuthorDetailById(id), AuthorDetailResponse.class);
   }
 
   @Override
-  public Author updateAuthor(UUID id, AuthorPatchRequest authorDto) throws IOException {
+  public Optional<Author> getAuthorEntityById(Integer id) {
+    return repository.findById(id);
+  }
+
+  @Override
+  public Author updateAuthor(Integer id, AuthorPatchRequest authorDto) throws IOException {
     Author author = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
     if (authorDto.getName() != null) {
       author.setName(authorDto.getName());
     }
-    if (authorDto.getDescription() != null) {
-      author.setDescription(authorDto.getDescription());
+    if (authorDto.getAbout() != null) {
+      author.setAbout(authorDto.getAbout());
     }
     if (authorDto.getPhoto() != null) {
       String fileName = CommonUtils.stringToSnakeCase(author.getName());
@@ -52,8 +58,23 @@ public class AuthorServiceImpl implements AuthorService{
           Map.of("transformation",
               new Transformation().width(500).height(500).crop("fill").fetchFormat("auto"))
       );
-      author.setPhotoUrl(imageURL);
+      author.setImageUrl(imageURL);
     }
     return mapper.map(repository.save(author), Author.class);
   }
+
+  @Override
+  public Author insertAuthor(Author author) {
+    return repository.save(author);
+  }
+
+  @Override
+  public Author addGenreToAuthor(Integer authorId, Genre genre) {
+    Author author = repository.findById(authorId)
+            .orElseThrow(() -> new RuntimeException("Author not found"));
+
+    author.addGenre(genre);
+    return repository.save(author); //
+  }
+
 }

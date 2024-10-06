@@ -7,15 +7,15 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.UUID;
 
-public interface AuthorRepository extends JpaRepository<Author, UUID> {
+public interface AuthorRepository extends JpaRepository<Author, Integer> {
 
   @Query(value =
       "SELECT " +
           "a.author_id AS id, " +
           "a.name AS name," +
-          "a.description AS description, " +
+          "a.about AS about, " +
           "a.born AS born, " +
-          "a.photo_url AS photoUrl, " +
+          "a.photo_url AS imageUrl, " +
           "a.created_at AS createdAt, " +
           "a.updated_at AS updatedAt, " +
           "sum(b.number_of_ratings) AS numberOfRatings, " +
@@ -32,6 +32,6 @@ public interface AuthorRepository extends JpaRepository<Author, UUID> {
       "WHERE a.author_id = :id " +
       "GROUP BY a.author_id ",
       nativeQuery = true)
-  AuthorDetailView findAuthorDetailById(@Param("id") UUID id);
+  AuthorDetailView findAuthorDetailById(@Param("id") Integer id);
 
 }

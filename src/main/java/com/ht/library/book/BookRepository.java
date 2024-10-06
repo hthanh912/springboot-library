@@ -40,7 +40,7 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
         countQuery = "SELECT count(b.book_id) FROM books b",
         nativeQuery = true
     )
-    List<BookView> findByQuery(@Param("authorId") UUID authorId, @Param("genreIds") UUID[] genreIds, Pageable pageable);
+    List<BookView> findByQuery(@Param("authorId") UUID authorId, @Param("genreIds") String[] genreIds, Pageable pageable);
 
 
     @Modifying

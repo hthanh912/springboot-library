@@ -78,7 +78,7 @@ public class ApplicationConfig {
     modelMapper.typeMap(AuthorDetailView.class, AuthorDetailResponse.class)
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
-          mapper.map(AuthorDetailView::getPhotoUrl, AuthorDetailResponse::setPhotoUrl);
+          mapper.map(AuthorDetailView::getImageUrl, AuthorDetailResponse::setImageUrl);
         });
 
     modelMapper.typeMap(Book.class, BookResponse.class)
@@ -108,7 +108,7 @@ public class ApplicationConfig {
     modelMapper.typeMap(AuthorDetailView.class, AuthorDetailResponse.class)
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
-          mapper.map(AuthorDetailView::getPhotoUrl, AuthorDetailResponse::setPhotoUrl);
+          mapper.map(AuthorDetailView::getImageUrl, AuthorDetailResponse::setImageUrl);
         });
 
     return modelMapper;

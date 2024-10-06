@@ -25,12 +25,12 @@ public class AuthorController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<AuthorDetailResponse> getAuthorById(@PathVariable UUID id) {
+  public ResponseEntity<AuthorDetailResponse> getAuthorById(@PathVariable Integer id) {
     return ResponseEntity.ok(service.getAuthorById(id));
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<Author> updateAuthor(@PathVariable UUID id, @ModelAttribute AuthorPatchRequest authorDto) throws IOException {
+  public ResponseEntity<Author> updateAuthor(@PathVariable Integer id, @ModelAttribute AuthorPatchRequest authorDto) throws IOException {
     return ResponseEntity.ok(service.updateAuthor(id, authorDto));
   }
 }

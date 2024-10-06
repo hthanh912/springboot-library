@@ -15,4 +15,8 @@ public class CommonUtils {
         .toLowerCase();
   }
 
+  public static String removeRedundantSpaces(String s) {
+    return s.trim().replaceAll("\\s+", " ");
+  }
+
 }

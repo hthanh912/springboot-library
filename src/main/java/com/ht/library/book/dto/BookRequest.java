@@ -17,6 +17,6 @@ public class BookRequest {
   private String title;
   private String description;
   private MultipartFile cover;
-  private UUID authorId;
+  private Integer authorId;
   private LocalDate publishedDate;
 }

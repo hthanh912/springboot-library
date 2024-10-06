@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
   private  final FileUpload fileUpload;
 
   @Override
-  public List<BookResponse> getAllBook(UUID authorId, UUID[] genreIds, Pageable pageable) {
+  public List<BookResponse> getAllBook(UUID authorId, String[] genreIds, Pageable pageable) {
     return bookrepository.findByQuery(authorId, genreIds, pageable)
         .stream()
         .map(book -> mapper.map(book, BookResponse.class))

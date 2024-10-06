@@ -26,7 +26,7 @@ public class BookController {
   @GetMapping("")
   public ResponseEntity<List<BookResponse>> getBooks(
       @RequestParam(value = "authorId", required = false, defaultValue = "00000000-0000-0000-0000-000000000000") UUID authorId,
-      @RequestParam(value = "genreIds", required = false, defaultValue = "") UUID[] genreIds,
+      @RequestParam(value = "genreIds", required = false, defaultValue = "") String[] genreIds,
       @PageableDefault(value = 10, page = 0) Pageable pageable
   ) {
     return new ResponseEntity<>(bookService.getAllBook(authorId, genreIds, pageable), HttpStatus.OK);
@@ -45,7 +45,7 @@ public class BookController {
   public ResponseEntity<List<BookResponse>> getBookByAuthorId(
       @PathVariable UUID authorId,
       @PageableDefault(value = 10, page = 0) Pageable pageable) {
-    return new ResponseEntity<>(bookService.getAllBook(authorId, new UUID[]{}, pageable), HttpStatus.OK);
+    return new ResponseEntity<>(bookService.getAllBook(authorId, new String[]{}, pageable), HttpStatus.OK);
   }
 
   @PostMapping("")
