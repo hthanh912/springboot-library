@@ -6,8 +6,8 @@ import com.ht.library.book.Book;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -24,14 +24,11 @@ public class Genre {
 
   private String name;
 
-//  @Column(name = "description", columnDefinition = "TEXT", length = 2048)
-//  private String description;
-
   @JsonIgnore
   @ManyToMany(
           mappedBy = "genres",
           fetch = FetchType.LAZY)
-  Set<Author> authors;
+  List<Author> authors;
 
   @JsonIgnore
   @ManyToMany(

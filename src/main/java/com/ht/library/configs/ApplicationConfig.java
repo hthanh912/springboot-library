@@ -1,7 +1,5 @@
 package com.ht.library.configs;
 
-import com.ht.library.author.dto.AuthorDetailView;
-import com.ht.library.author.dto.AuthorDetailResponse;
 import com.ht.library.book.Book;
 import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookResponse;
@@ -75,12 +73,6 @@ public class ApplicationConfig {
           mapper.map(User::getAvatarUrl, UserDetailResponse::setAvatarUrl);
         });
 
-    modelMapper.typeMap(AuthorDetailView.class, AuthorDetailResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
-          mapper.map(AuthorDetailView::getImageUrl, AuthorDetailResponse::setImageUrl);
-        });
-
     modelMapper.typeMap(Book.class, BookResponse.class)
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
@@ -103,12 +95,6 @@ public class ApplicationConfig {
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
           mapper.map(Book::getCoverUrl, BookDetailResponse::setCoverUrl);
-        });
-
-    modelMapper.typeMap(AuthorDetailView.class, AuthorDetailResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
-          mapper.map(AuthorDetailView::getImageUrl, AuthorDetailResponse::setImageUrl);
         });
 
     return modelMapper;

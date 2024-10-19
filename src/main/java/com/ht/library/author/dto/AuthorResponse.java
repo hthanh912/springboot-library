@@ -1,15 +1,12 @@
 package com.ht.library.author.dto;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.ht.library.genre.dto.GenreItemResponse;
 
-import java.util.UUID;
+import java.util.List;
 
-@Data
-@Getter
-@Setter
-public class AuthorResponse {
-  private UUID id;
-  private String name;
+public interface AuthorResponse {
+  Integer getId();
+  String getName();
+  Float getAverageRating();
+  List<GenreItemResponse> getGenres();
 }

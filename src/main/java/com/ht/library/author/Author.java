@@ -75,11 +75,11 @@ public class Author {
 
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
   @UpdateTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-  private Date updatedAt;
+  private LocalDateTime updatedAt;
 
   public void addGenre(Genre genre) {
     genres.add(genre);

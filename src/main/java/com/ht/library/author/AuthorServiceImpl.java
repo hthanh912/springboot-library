@@ -1,7 +1,7 @@
 package com.ht.library.author;
 
 import com.cloudinary.Transformation;
-import com.ht.library.author.dto.AuthorDetailResponse;
+import com.ht.library.author.dto.AuthorDetailView;
 import com.ht.library.author.dto.AuthorPatchRequest;
 import com.ht.library.author.dto.AuthorResponse;
 import com.ht.library.configs.cloudinary.FileUpload;
@@ -10,6 +10,7 @@ import com.ht.library.genre.Genre;
 import com.ht.library.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,17 +26,13 @@ public class AuthorServiceImpl implements AuthorService{
   private final FileUpload fileUpload;
 
   @Override
-  public List<AuthorResponse> getAllAuthor() {
-    return repository
-        .findAll()
-        .stream()
-        .map(e -> mapper.map(e, AuthorResponse.class))
-        .toList();
+  public List<AuthorResponse> getAllAuthor(Pageable pageable) {
+    return repository.findAuthorWithGenres(pageable);
   }
 
   @Override
-  public AuthorDetailResponse getAuthorById(Integer id) {
-    return mapper.map(repository.findAuthorDetailById(id), AuthorDetailResponse.class);
+  public AuthorDetailView getAuthorById(Integer id) {
+    return repository.findAuthorDetailById(id);
   }
 
   @Override
