@@ -2,7 +2,9 @@ package com.ht.library.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -17,5 +19,16 @@ public final class DateTimeUtils {
   public static LocalDateTime parseToLocalDateTime(String dateTimeString) {
     // Parse the string to LocalDateTime
     return LocalDateTime.parse(dateTimeString, dateTimeFormatter);
+  }
+
+  public static LocalDateTime timestampToLocalDateTime(String timestampString) {
+    // Step 1: Convert the string to a long
+    long timestampMillis = Long.parseLong(timestampString);
+
+    // Step 2: Create an Instant
+    Instant instant = Instant.ofEpochMilli(timestampMillis);
+
+    // Step 3: Convert to LocalDateTime
+    return instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
   }
 }

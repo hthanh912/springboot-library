@@ -25,7 +25,7 @@ public class BookController {
 
   @GetMapping("")
   public ResponseEntity<List<BookResponse>> getBooks(
-      @RequestParam(value = "authorId", required = false, defaultValue = "00000000-0000-0000-0000-000000000000") UUID authorId,
+      @RequestParam(value = "authorId", required = false, defaultValue = "00000000-0000-0000-0000-000000000000") Integer authorId,
       @RequestParam(value = "genreIds", required = false, defaultValue = "") String[] genreIds,
       @PageableDefault(value = 10, page = 0) Pageable pageable
   ) {
@@ -33,7 +33,7 @@ public class BookController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<BookDetailResponse> getBookById(@PathVariable UUID id) {
+  public ResponseEntity<BookDetailResponse> getBookById(@PathVariable Integer id) {
     var book = bookService.getBookById(id);
     if (book != null) {
       return new ResponseEntity<>(book, HttpStatus.OK);
@@ -43,7 +43,7 @@ public class BookController {
 
   @GetMapping("/author/{authorId}")
   public ResponseEntity<List<BookResponse>> getBookByAuthorId(
-      @PathVariable UUID authorId,
+      @PathVariable Integer authorId,
       @PageableDefault(value = 10, page = 0) Pageable pageable) {
     return new ResponseEntity<>(bookService.getAllBook(authorId, new String[]{}, pageable), HttpStatus.OK);
   }
@@ -56,12 +56,12 @@ public class BookController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteBook(@PathVariable UUID id) {
+  public void deleteBook(@PathVariable Integer id) {
     bookService.delete(id);
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<BookResponse> patch(@PathVariable UUID id, @ModelAttribute BookRequest bookDto) throws IOException {
+  public ResponseEntity<BookResponse> patch(@PathVariable Integer id, @ModelAttribute BookRequest bookDto) throws IOException {
     var book = bookService.patch(id, bookDto);
     return new ResponseEntity<>(book, HttpStatus.OK);
   }

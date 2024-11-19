@@ -76,7 +76,7 @@ public class ApplicationConfig {
     modelMapper.typeMap(Book.class, BookResponse.class)
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
-          mapper.map(Book::getCoverUrl, BookResponse::setCoverUrl);
+//          mapper.map(Book::getCoverUrl, BookResponse::setCoverUrl);
         });
 
     modelMapper.typeMap(BookView.class, BookResponse.class)
@@ -94,7 +94,7 @@ public class ApplicationConfig {
     modelMapper.typeMap(Book.class, BookDetailResponse.class)
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
-          mapper.map(Book::getCoverUrl, BookDetailResponse::setCoverUrl);
+//          mapper.map(Book::getCoverUrl, BookDetailResponse::setCoverUrl);
         });
 
     return modelMapper;

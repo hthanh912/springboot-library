@@ -26,15 +26,16 @@ public class BookServiceImpl implements BookService {
   private  final FileUpload fileUpload;
 
   @Override
-  public List<BookResponse> getAllBook(UUID authorId, String[] genreIds, Pageable pageable) {
-    return bookrepository.findByQuery(authorId, genreIds, pageable)
-        .stream()
-        .map(book -> mapper.map(book, BookResponse.class))
-        .toList();
+  public List<BookResponse> getAllBook(Integer authorId, String[] genreIds, Pageable pageable) {
+//    return bookrepository.findByQuery(authorId, genreIds, pageable)
+//        .stream()
+//        .map(book -> mapper.map(book, BookResponse.class))
+//        .toList();
+    return null;
   }
 
   @Override
-  public BookDetailResponse getBookById(UUID id) {
+  public BookDetailResponse getBookById(Integer id) {
     var book = bookrepository.findById(id);
     if (book.isPresent()) {
       return mapper.map(book.get(), BookDetailResponse.class);
@@ -46,26 +47,31 @@ public class BookServiceImpl implements BookService {
   public BookResponse insertBook(BookRequest bookDTO) throws IOException {
     Book book = mapper.map(bookDTO, Book.class);
     if (!authorRepository.existsById(bookDTO.getAuthorId())) throw new ResourceNotFoundException("Author not found");
-    book.setAuthor(authorRepository.getReferenceById(bookDTO.getAuthorId()));
+//    book.setAuthor(authorRepository.getReferenceById(bookDTO.getAuthorId()));
     if (bookDTO.getCover() != null) {
       String fileName = CommonUtils.stringToSnakeCase(book.getTitle());
       String imageURL = fileUpload.uploadFile(bookDTO.getCover(), fileName, "books",
           Map.of("transformation", new Transformation().fetchFormat("auto"))
       );
-      book.setCoverUrl(imageURL);
+//      book.setCoverUrl(imageURL);
     }
     return mapper.map(bookrepository.save(book), BookResponse.class);
   }
 
-  @Override
-  public void delete(UUID id) {
+    @Override
+    public Book insertBook(Book book) throws IOException {
+      return bookrepository.save(book);
+    }
+
+    @Override
+  public void delete(Integer id) {
     if (bookrepository.existsById(id)) {
       bookrepository.deleteById(id);
     } else throw new ResourceNotFoundException("Not found book id " + id);
   }
 
   @Override
-  public BookResponse patch(UUID id, BookRequest bookDTO) throws IOException {
+  public BookResponse patch(Integer id, BookRequest bookDTO) throws IOException {
     Book book = bookrepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book id " + id + "not found"));
     if (bookDTO.getTitle() != null) {
       book.setTitle(bookDTO.getTitle());
@@ -74,14 +80,14 @@ public class BookServiceImpl implements BookService {
       book.setDescription(bookDTO.getDescription());
     }
     if (bookDTO.getPublishedDate() != null) {
-      book.setPublishedDate(bookDTO.getPublishedDate());
+//      book.setPublishedDate(bookDTO.getPublishedDate());
     }
     if (bookDTO.getCover() != null) {
       String fileName = CommonUtils.stringToSnakeCase(book.getTitle());
       String imageURL = fileUpload.uploadFile(bookDTO.getCover(), fileName, "books",
           Map.of("transformation", new Transformation().fetchFormat("auto"))
       );
-      book.setCoverUrl(imageURL);
+//      book.setCoverUrl(imageURL);
     }
     return mapper.map(bookrepository.save(book), BookResponse.class);
   }

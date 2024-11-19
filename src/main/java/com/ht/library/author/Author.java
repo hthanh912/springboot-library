@@ -67,10 +67,11 @@ public class Author {
   @Column(name = "ratings_count")
   private Integer ratingsCount;
 
-  @OneToMany(fetch = FetchType.LAZY,
-      mappedBy = "author",
-      cascade = CascadeType.ALL)
-  @JsonIgnore
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+          name = "author_book",
+          joinColumns = @JoinColumn(name = "author_id"),
+          inverseJoinColumns = @JoinColumn(name = "book_id"))
   private List<Book> books = new ArrayList<>();
 
   @CreationTimestamp
