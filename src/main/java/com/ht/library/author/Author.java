@@ -12,7 +12,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -48,7 +47,7 @@ public class Author {
           name = "author_genre",
           joinColumns = @JoinColumn(name = "author_id"),
           inverseJoinColumns = @JoinColumn(name = "genre_id"))
-  private List<Genre> genres = new ArrayList<>();
+  private Set<Genre> genres = new HashSet<>();
 
   @ManyToMany
   @JoinTable(
@@ -56,7 +55,7 @@ public class Author {
           joinColumns = @JoinColumn(name = "author_id"),
           inverseJoinColumns = @JoinColumn(name = "influence_author_id")
   )
-  private List<Author> influences = new ArrayList<>();
+  private Set<Author> influences = new HashSet<>();
 
   @Column(name = "average_rating")
   private Float avgRating;
@@ -67,15 +66,16 @@ public class Author {
   @Column(name = "ratings_count")
   private Integer ratingsCount;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
           name = "author_book",
           joinColumns = @JoinColumn(name = "author_id"),
           inverseJoinColumns = @JoinColumn(name = "book_id"))
-  private List<Book> books = new ArrayList<>();
+  private Set<Book> books = new HashSet<>();
 
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+  @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
 
   @UpdateTimestamp

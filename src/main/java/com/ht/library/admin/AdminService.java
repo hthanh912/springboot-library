@@ -11,6 +11,7 @@ import com.ht.library.book.*;
 import com.ht.library.award.Designation;
 import com.ht.library.genre.Genre;
 import com.ht.library.genre.GenreService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +36,10 @@ public class AdminService {
 
     Gson gson = new Gson();
 
+    @Transactional
     public void importJLData() {
-        String booksJLFilePath = "src/main/resources/jldata/book_1_best_books_ever_001_100.jl";
-        String authorJLFilePath = "src/main/resources/jldata/author_1_best_books_ever_001_100.jl";
+        String booksJLFilePath = "src/main/resources/jldata/book_best_001_002.jl";
+        String authorJLFilePath = "src/main/resources/jldata/author_best_001_002.jl";
 
         // Read and import Authors
         readAndImportAuthorsData(authorJLFilePath);
@@ -71,12 +73,12 @@ public class AdminService {
                 JsonElement characters = jsonObject.get("characters");
                 JsonElement places = jsonObject.get("places");
                 JsonElement ratingHistogram = jsonObject.get("ratingHistogram");
+                JsonElement averageRating = jsonObject.get("avgRating");
                 JsonElement ratingsCount = jsonObject.get("ratingsCount");
                 JsonElement reviewsCount = jsonObject.get("reviewsCount");
                 JsonElement numPages = jsonObject.get("numPages");
                 JsonElement language = jsonObject.get("language");
                 JsonElement awards = jsonObject.get("awards");
-
 
                 if (id != null) {
                     book.setId(id.getAsInt());
@@ -103,16 +105,14 @@ public class AdminService {
                 }
 
                 if (genres != null) {
-                    List<Genre> listGenre = new ArrayList<>();
                     for (JsonElement element :genres.getAsJsonArray()) {
                         Optional<Genre> genre = genreService.findByName(element.getAsString());
                         if (genre.isPresent()) {
-                            listGenre.add(genre.get());
+                             book.getGenres().add(genre.get());
                         } else {
-                            listGenre.add(insertGenre(element.getAsString()));
+                            book.getGenres().add(insertGenre(element.getAsString()));
                         }
                     }
-                    book.setGenres(listGenre);
                 }
 
                 if (asin != null) {
@@ -140,12 +140,13 @@ public class AdminService {
                 }
 
                 if (author != null) {
-                    List<Author> authors = new ArrayList<>();
                     for (JsonElement object: author.getAsJsonArray()) {
                         Optional<Author> a = authorService.getAuthorEntityById(object.getAsInt());
-                        a.ifPresent(authors::add);
+                        if (a.isPresent()) {
+                            book.getAuthors().add(a.get());
+                            a.get().getBooks().add(book);
+                        }
                     }
-                    book.setAuthors(authors);
                 }
 
                 if (publishDate != null) {
@@ -172,6 +173,10 @@ public class AdminService {
                     book.setRatingHistogram(ratingHistogram.toString());
                 }
 
+                if (averageRating != null) {
+                    book.setAverageRating(averageRating.getAsFloat());
+                }
+
                 if (ratingsCount != null) {
                     book.setRatingsCount(ratingsCount.getAsInt());
                 }
@@ -187,7 +192,6 @@ public class AdminService {
                 if (language != null) {
                     book.setLanguage(language.getAsString());
                 }
-
 
                 var insertedBook = bookService.insertBook(book);
 
@@ -222,7 +226,6 @@ public class AdminService {
                         }
 
                         bookAwardService.insertBookAward(bookAward);
-
                     }
                 }
             }
@@ -292,29 +295,26 @@ public class AdminService {
                 }
 
                 if (genres != null) {
-                    List<Genre> listGenre = new ArrayList<>();
                     for (JsonElement element :genres.getAsJsonArray()) {
                         Optional<Genre> genre = genreService.findByName(element.getAsString());
                         if (genre.isPresent()) {
-                            listGenre.add(genre.get());
+                            author.getGenres().add(genre.get());
                         } else {
-                            listGenre.add(insertGenre(element.getAsString()));
+                            author.getGenres().add(insertGenre(element.getAsString()));
                         }
                     }
-                    author.setGenres(listGenre);
                 }
 
                 if (influences != null) {
-                    List<Author> listAuthor = new ArrayList<>();
                     for (JsonElement element :influences.getAsJsonArray()) {
                         Optional<Author> influence = authorService.getAuthorEntityById(element.getAsInt());
-                        influence.ifPresent(listAuthor::add);
+                        influence.ifPresent(i -> {
+                            author.getInfluences().add(i);
+                        });
                     }
-                    author.setInfluences(listAuthor);
                 }
 
                 authorService.insertAuthor(author);
-
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -6,6 +6,7 @@ import com.ht.library.book.Book;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,11 +29,11 @@ public class Genre {
   @ManyToMany(
           mappedBy = "genres",
           fetch = FetchType.LAZY)
-  List<Author> authors;
+  Set<Author> authors = new HashSet<>();
 
   @JsonIgnore
   @ManyToMany(
       mappedBy = "genres",
       fetch = FetchType.LAZY)
-  Set<Book> books;
+  Set<Book> books = new HashSet<>();
 }

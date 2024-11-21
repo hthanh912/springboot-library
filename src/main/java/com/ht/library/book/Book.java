@@ -14,7 +14,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -47,7 +46,7 @@ public class Book {
           name = "book_genre",
           joinColumns = @JoinColumn(name = "book_id"),
           inverseJoinColumns = @JoinColumn(name = "genre_id"))
-  private List<Genre> genres = new ArrayList<>();
+  private Set<Genre> genres = new HashSet<>();
 
   @Column(name = "asin")
   private String asin;
@@ -65,11 +64,8 @@ public class Book {
   @Column(name = "series")
   private List<String> series;
 
-  @JsonIgnore
-  @ManyToMany(
-          mappedBy = "books",
-          fetch = FetchType.LAZY)
-  List<Author> authors;
+  @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL)
+  Set<Author> authors = new HashSet<>();
 
   @Column(name = "published_date")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -85,6 +81,9 @@ public class Book {
 
   @Column(name = "rating_histogram")
   private String ratingHistogram;
+
+  @Column(name = "average_rating")
+  private Float averageRating;
 
   @Column(name = "ratings_count")
   private Integer ratingsCount;
@@ -113,6 +112,7 @@ public class Book {
 
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+  @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
 
   @UpdateTimestamp

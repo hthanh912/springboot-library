@@ -4,7 +4,9 @@ import com.ht.library.book.BookAward;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -22,7 +24,7 @@ public class Award {
     private String name;
 
     @OneToMany(mappedBy = "award")
-    private Set<BookAward> bookAwards;
+    private List<BookAward> bookAwards = new ArrayList<>();
 
     public Award(Integer id, String name) {
         this.id = id;
