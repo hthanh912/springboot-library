@@ -80,7 +80,7 @@ public class Book {
   private List<String> places;
 
   @Column(name = "rating_histogram")
-  private String ratingHistogram;
+  private Integer[] ratingHistogram;
 
   @Column(name = "average_rating")
   private Float averageRating;

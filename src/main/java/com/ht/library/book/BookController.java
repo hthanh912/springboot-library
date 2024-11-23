@@ -1,8 +1,6 @@
 package com.ht.library.book;
 
-import com.ht.library.book.dto.BookResponse;
-import com.ht.library.book.dto.BookDetailResponse;
-import com.ht.library.book.dto.BookRequest;
+import com.ht.library.book.dto.*;
 import com.ht.library.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/books")
@@ -25,11 +22,14 @@ public class BookController {
 
   @GetMapping("")
   public ResponseEntity<List<BookResponse>> getBooks(
-      @RequestParam(value = "authorId", required = false, defaultValue = "00000000-0000-0000-0000-000000000000") Integer authorId,
+      @RequestParam(value = "authorIds", required = false) Integer[] authorIds,
       @RequestParam(value = "genreIds", required = false, defaultValue = "") String[] genreIds,
       @PageableDefault(value = 10, page = 0) Pageable pageable
   ) {
-    return new ResponseEntity<>(bookService.getAllBook(authorId, genreIds, pageable), HttpStatus.OK);
+    if (authorIds == null || authorIds.length == 0) {
+      authorIds = new Integer[0]; // Assign an empty array if no ids are provided
+    }
+    return new ResponseEntity<>(bookService.getAllBook(authorIds, genreIds, pageable), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
@@ -45,9 +45,10 @@ public class BookController {
   public ResponseEntity<List<BookResponse>> getBookByAuthorId(
       @PathVariable Integer authorId,
       @PageableDefault(value = 10, page = 0) Pageable pageable) {
-    return new ResponseEntity<>(bookService.getAllBook(authorId, new String[]{}, pageable), HttpStatus.OK);
+    return new ResponseEntity<>(bookService.getAllBook(new Integer[]{authorId}, new String[0], pageable), HttpStatus.OK);
   }
 
+  // TODO:
   @PostMapping("")
   public ResponseEntity<BookResponse> insertBook(@ModelAttribute BookRequest bookDto) throws IOException {
     var insertedBook = bookService.insertBook(bookDto);
@@ -60,6 +61,7 @@ public class BookController {
     bookService.delete(id);
   }
 
+  // TODO:
   @PatchMapping("/{id}")
   public ResponseEntity<BookResponse> patch(@PathVariable Integer id, @ModelAttribute BookRequest bookDto) throws IOException {
     var book = bookService.patch(id, bookDto);

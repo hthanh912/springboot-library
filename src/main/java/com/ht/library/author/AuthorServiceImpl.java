@@ -55,7 +55,7 @@ public class AuthorServiceImpl implements AuthorService{
           Map.of("transformation",
               new Transformation().width(500).height(500).crop("fill").fetchFormat("auto"))
       );
-      author.setImageUrl(imageURL);
+//      author.setImageUrl(imageURL);
     }
     return mapper.map(repository.save(author), Author.class);
   }

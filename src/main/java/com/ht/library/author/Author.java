@@ -24,9 +24,6 @@ public class Author {
   @Column(name = "author_id")
   private Integer id;
 
-  @Column(name = "goodread_url")
-  private String goodreadUrl;
-
   @Column(name = "name")
   private String name;
 
@@ -38,9 +35,6 @@ public class Author {
 
   @Column(name = "about", columnDefinition="TEXT", length = 2048)
   private String about;
-
-  @Column(name = "image_url")
-  private String imageUrl;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(

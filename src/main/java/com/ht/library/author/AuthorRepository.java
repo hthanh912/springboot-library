@@ -18,7 +18,6 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
       "SELECT " +
             "a.author_id AS id, " +
             "a.name AS name, " +
-            "a.goodread_url AS goodreadUrl, " +
             "a.birth_date AS birthDate, " +
             "a.death_date AS deathDate, " +
             "a.about AS about, " +

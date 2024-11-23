@@ -9,6 +9,8 @@ import com.ht.library.award.Award;
 import com.ht.library.award.AwardService;
 import com.ht.library.book.*;
 import com.ht.library.award.Designation;
+import com.ht.library.configs.cloudinary.CloudinaryConfig;
+import com.ht.library.configs.cloudinary.FileUpload;
 import com.ht.library.genre.Genre;
 import com.ht.library.genre.GenreService;
 import jakarta.transaction.Transactional;
@@ -20,6 +22,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import static com.ht.library.utils.CommonUtils.convertToIntegerArray;
 import static com.ht.library.utils.CommonUtils.removeRedundantSpaces;
 import static com.ht.library.utils.DateTimeUtils.parseToLocalDateTime;
 import static com.ht.library.utils.DateTimeUtils.timestampToLocalDateTime;
@@ -33,6 +36,7 @@ public class AdminService {
     private final BookService bookService;
     private final BookAwardService bookAwardService;
     private final AwardService awardService;
+    private final FileUpload fileUpload;
 
     Gson gson = new Gson();
 
@@ -100,8 +104,19 @@ public class AdminService {
                     book.setDescription(description.getAsString());
                 }
 
-                if (imageUrl != null) {
+                if (imageUrl != null && id != null) {
                     book.setImageUrl(imageUrl.getAsString());
+                    new Thread(() -> {
+                        try {
+                            fileUpload.uploadFile(
+                                    imageUrl.getAsString(),
+                                    id.getAsString(),
+                                    CloudinaryConfig.FOLDER.books.toString(),
+                                    null);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).start();
                 }
 
                 if (genres != null) {
@@ -170,7 +185,7 @@ public class AdminService {
                 }
 
                 if (ratingHistogram != null) {
-                    book.setRatingHistogram(ratingHistogram.toString());
+                    book.setRatingHistogram(convertToIntegerArray(ratingHistogram.toString()));
                 }
 
                 if (averageRating != null) {
@@ -242,7 +257,6 @@ public class AdminService {
                 Author author = new Author();
 
                 JsonElement id = jsonObject.get("id");
-                JsonElement goodreadUrl = jsonObject.get("goodreadUrl");
                 JsonElement name = jsonObject.get("name");
                 JsonElement birthDate = jsonObject.get("birthDate");
                 JsonElement deathDate = jsonObject.get("deathDate");
@@ -256,10 +270,6 @@ public class AdminService {
 
                 if (id != null) {
                     author.setId(id.getAsInt());
-                }
-
-                if (goodreadUrl != null) {
-                    author.setGoodreadUrl(goodreadUrl.getAsString());
                 }
 
                 if (name != null) {
@@ -290,8 +300,14 @@ public class AdminService {
                     author.setAbout(about.getAsString());
                 }
 
-                if (imageUrl != null) {
-                    author.setImageUrl(imageUrl.getAsString());
+                if (imageUrl != null && id != null) {
+                    new Thread(() -> {
+                        try {
+                            fileUpload.uploadFile(imageUrl.getAsString(), id.getAsString(), CloudinaryConfig.FOLDER.authors.toString(), null);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).start();
                 }
 
                 if (genres != null) {

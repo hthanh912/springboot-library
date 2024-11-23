@@ -19,4 +19,21 @@ public class CommonUtils {
     return s.trim().replaceAll("\\s+", " ");
   }
 
+  public static Integer[] convertToIntegerArray(String histogram) {
+    if (histogram == null || histogram.isEmpty()) {
+      return new Integer[0]; // Return an empty array if input is null or empty
+    }
+
+    // Remove brackets and split by commas
+    histogram = histogram.replaceAll("\\[", "").replaceAll("\\]", "").trim();
+    String[] stringArray = histogram.split(",");
+
+    // Convert to Integer array
+    Integer[] intArray = new Integer[stringArray.length];
+    for (int i = 0; i < stringArray.length; i++) {
+      intArray[i] = Integer.parseInt(stringArray[i].trim()); // Parse each string to Integer
+    }
+
+    return intArray;
+  }
 }
