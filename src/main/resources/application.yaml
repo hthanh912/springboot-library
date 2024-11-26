@@ -1,10 +1,15 @@
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
   jpa:
     generate-ddl: 'true'
     properties:
       hibernate:
         format_sql: 'true'
-    show-sql: 'true'
+    show-sql: 'false'
     #drop n create table again, good for testing, comment this in production
     #spring.jpa.hibernate.ddl-auto=create
   datasource:
@@ -14,5 +19,6 @@ spring:
 cloudinary:
   url: cloudinary://149924232464535:bHDB80pKyomXrFyeYxs5AnyAIc0@djmhm13uu
   cloudName: djmhm13uu
+  folderName: bookery
   apiKey: '149924232464535'
   apiSecret: bHDB80pKyomXrFyeYxs5AnyAIc0

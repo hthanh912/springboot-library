@@ -16,10 +16,13 @@ import com.ht.library.genre.GenreService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 import static com.ht.library.utils.CommonUtils.convertToIntegerArray;
@@ -41,20 +44,18 @@ public class AdminService {
     Gson gson = new Gson();
 
     @Transactional
-    public void importJLData() {
-        String booksJLFilePath = "src/main/resources/jldata/book_best_001_002.jl";
-        String authorJLFilePath = "src/main/resources/jldata/author_best_001_002.jl";
+    public void importJLData(MultipartFile authorJLData, MultipartFile bookJLData) {
 
         // Read and import Authors
-        readAndImportAuthorsData(authorJLFilePath);
+        readAndImportAuthorsData(authorJLData);
 
         // Read and import Books & Award
-        readAndImportBooksData(booksJLFilePath);
+        readAndImportBooksData(bookJLData);
     }
 
-    private void readAndImportBooksData(String filePath) {
+    private void readAndImportBooksData(MultipartFile file) {
         Gson gson = new Gson();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             while ((line = br.readLine()) != null) {
                 JsonObject jsonObject = gson.fromJson(line, JsonObject.class);
@@ -249,8 +250,8 @@ public class AdminService {
         }
     }
 
-    private void readAndImportAuthorsData(String filePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+    private void readAndImportAuthorsData(MultipartFile file) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             while ((line = br.readLine()) != null) {
                 JsonObject jsonObject = gson.fromJson(line, JsonObject.class);
