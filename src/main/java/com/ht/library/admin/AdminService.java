@@ -16,11 +16,9 @@ import com.ht.library.genre.GenreService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -124,7 +122,9 @@ public class AdminService {
                     for (JsonElement element :genres.getAsJsonArray()) {
                         Optional<Genre> genre = genreService.findByName(element.getAsString());
                         if (genre.isPresent()) {
-                             book.getGenres().add(genre.get());
+                            if (!book.getGenres().contains(genre.get())) {
+                                book.getGenres().add(genre.get());
+                            }
                         } else {
                             book.getGenres().add(insertGenre(element.getAsString()));
                         }
@@ -315,7 +315,9 @@ public class AdminService {
                     for (JsonElement element :genres.getAsJsonArray()) {
                         Optional<Genre> genre = genreService.findByName(element.getAsString());
                         if (genre.isPresent()) {
-                            author.getGenres().add(genre.get());
+                            if (!author.getGenres().contains(genre.get())) {
+                                author.getGenres().add(genre.get());
+                            }
                         } else {
                             author.getGenres().add(insertGenre(element.getAsString()));
                         }
