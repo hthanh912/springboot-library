@@ -15,7 +15,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/books")
-@CrossOrigin
 @RequiredArgsConstructor
 public class BookController {
 
