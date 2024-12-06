@@ -6,6 +6,8 @@ import com.ht.library.author.dto.AuthorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,14 @@ public class AuthorController {
 
   @GetMapping("")
   public ResponseEntity<List<AuthorResponse>> getAllAuthors(
-          @RequestParam(defaultValue = "0") int page,
-          @RequestParam(defaultValue = "10") int size) {
-    Pageable pageable = PageRequest.of(page, size);
-    return ResponseEntity.ok(service.getAllAuthor(pageable));
+          @PageableDefault(value = 10, page = 0) Pageable pageable,
+          @RequestParam(value = "sort", defaultValue = "averageRating,desc") String[] sort
+  ) {
+    Pageable pagingAndSorting = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+    return ResponseEntity.ok(service.getAllAuthor(pagingAndSorting));
   }
 
   @GetMapping("/{id}")

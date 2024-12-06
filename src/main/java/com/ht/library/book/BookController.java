@@ -3,7 +3,9 @@ package com.ht.library.book;
 import com.ht.library.book.dto.*;
 import com.ht.library.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +26,17 @@ public class BookController {
   public ResponseEntity<List<BookResponse>> getBooks(
       @RequestParam(value = "authorIds", required = false) Integer[] authorIds,
       @RequestParam(value = "genreIds", required = false, defaultValue = "") String[] genreIds,
-      @PageableDefault(value = 10, page = 0) Pageable pageable
+      @PageableDefault(value = 10, page = 0) Pageable pageable,
+      @RequestParam(value = "sort", defaultValue = "averageRating,desc") String[] sort
   ) {
     if (authorIds == null || authorIds.length == 0) {
       authorIds = new Integer[0]; // Assign an empty array if no ids are provided
     }
-    return new ResponseEntity<>(bookService.getAllBook(authorIds, genreIds, pageable), HttpStatus.OK);
+    Pageable pagingAndSorting = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+    return new ResponseEntity<>(bookService.getAllBook(authorIds, genreIds, pagingAndSorting), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
@@ -44,8 +51,13 @@ public class BookController {
   @GetMapping("/author/{authorId}")
   public ResponseEntity<List<BookResponse>> getBookByAuthorId(
       @PathVariable Integer authorId,
-      @PageableDefault(value = 10, page = 0) Pageable pageable) {
-    return new ResponseEntity<>(bookService.getAllBook(new Integer[]{authorId}, new String[0], pageable), HttpStatus.OK);
+      @PageableDefault(value = 10, page = 0) Pageable pageable,
+      @RequestParam(value = "sort", defaultValue = "averageRating,desc") String[] sort) {
+    Pageable pagingAndSorting = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+    return new ResponseEntity<>(bookService.getAllBook(new Integer[]{authorId}, new String[0], pagingAndSorting), HttpStatus.OK);
   }
 
   // TODO:
