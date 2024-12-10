@@ -52,13 +52,13 @@ public class Author {
   private Set<Author> influences = new HashSet<>();
 
   @Column(name = "average_rating")
-  private Float avgRating;
+  private Float averageRating = 0F;
 
   @Column(name = "reviews_count")
-  private Integer reviewsCount;
+  private Integer reviewsCount = 0;
 
   @Column(name = "ratings_count")
-  private Integer ratingsCount;
+  private Integer ratingsCount = 0;
 
   @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(

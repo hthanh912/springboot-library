@@ -286,7 +286,7 @@ public class AdminService {
                 }
 
                 if (avgRating != null) {
-                    author.setAvgRating(avgRating.getAsFloat());
+                    author.setAverageRating(avgRating.getAsFloat());
                 }
 
                 if (reviewsCount != null) {

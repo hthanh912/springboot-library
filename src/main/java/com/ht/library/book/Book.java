@@ -83,16 +83,16 @@ public class Book {
   private Integer[] ratingHistogram;
 
   @Column(name = "average_rating")
-  private Float averageRating;
+  private Float averageRating = 0F;
 
   @Column(name = "ratings_count")
-  private Integer ratingsCount;
+  private Integer ratingsCount = 0;
 
   @Column(name = "reviews_count")
-  private Integer reviewsCount;
+  private Integer reviewsCount = 0;
 
   @Column(name = "num_pages")
-  private Integer numPages;
+  private Integer numPages = 0;
 
   @Column(name = "language")
   private String language;
