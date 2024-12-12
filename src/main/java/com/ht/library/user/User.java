@@ -51,7 +51,7 @@ public class User implements UserDetails {
 
   @JsonIgnore
   @OneToMany(mappedBy = "user")
-  Set<UserBook> userBooks;
+  List<UserBook> userBooks = new ArrayList<>();
 
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")

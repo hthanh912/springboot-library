@@ -27,7 +27,7 @@ public class GenreController {
 
   @GetMapping("/{id}")
   public ResponseEntity<List<BookResponse>> getBookByGenreId(
-      @PathVariable UUID id,
+      @PathVariable String id,
       @PageableDefault(value = 10, page = 0) Pageable pageable)
   {
     return ResponseEntity.ok(service.getBookByGenreId(id, pageable));

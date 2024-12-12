@@ -1,12 +1,14 @@
 package com.ht.library.genre;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ht.library.author.Author;
 import com.ht.library.book.Book;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -18,18 +20,20 @@ import java.util.UUID;
 @Getter
 public class Genre {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "genre_id")
-  private UUID id;
+  private String id;
 
   private String name;
 
-  @Column(name = "description", columnDefinition = "TEXT", length = 2048)
-  private String description;
+  @JsonIgnore
+  @ManyToMany(
+          mappedBy = "genres",
+          fetch = FetchType.LAZY)
+  Set<Author> authors = new HashSet<>();
 
   @JsonIgnore
   @ManyToMany(
       mappedBy = "genres",
       fetch = FetchType.LAZY)
-  Set<Book> books;
+  Set<Book> books = new HashSet<>();
 }

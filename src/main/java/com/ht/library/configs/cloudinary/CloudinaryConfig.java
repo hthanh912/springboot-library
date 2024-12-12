@@ -16,16 +16,22 @@ public class CloudinaryConfig {
   private static String CLOUD_NAME;
   private static String API_KEY;
   private static String API_SECRET;
-
+  private static String FOLDER_NAME;
   public static Integer SMALL_WIDTH = 200;
   public static Integer MEDIUM_WIDTH = 400;
   public static Integer LARGE_WIDTH = 800;
+
+  public enum FOLDER {
+    books,
+    authors,
+    users
+  }
 
   public static Converter<String, String> convertPublicIdToUrl(Integer size) {
     return new AbstractConverter<>() {
       @Override
       protected String convert(String url) {
-        return getImageUrl(url, size);
+        return getImageUrl(url, "", size);
       }
     };
   }
@@ -33,6 +39,11 @@ public class CloudinaryConfig {
   @Value("${cloudinary.cloudName}")
   public void setCloudName(String cloudName) {
     CLOUD_NAME = cloudName;
+  }
+
+  @Value("${cloudinary.folderName}")
+  public void setFolderName(String folderName) {
+    FOLDER_NAME = folderName;
   }
 
   @Value("${cloudinary.apiKey}")
@@ -54,18 +65,8 @@ public class CloudinaryConfig {
     return new Cloudinary(config);
   }
 
-  public static String getImageUrl(String publicId, Integer size){
-    StringBuilder sb = new StringBuilder(RES_CLOUDINARY_URL + CLOUD_NAME + "/image/upload/");
-    sb.append("w_" + size + "/");
-    sb.append(publicId);
-    return sb.toString();
+  public static String getImageUrl(String id, String path, Integer size){
+    return RES_CLOUDINARY_URL + CLOUD_NAME + "/image/upload/" + "w_" + size + "/" + FOLDER_NAME + "/" + path + "/" + id;
   }
 
-//  public static AbstractConverter<String, String> convertPublicIdToUrl =
-//          new AbstractConverter<>() {
-//            @Override
-//            protected String convert(String src) {
-//              return getImageUrl(src);
-//            }
-//          };
 }

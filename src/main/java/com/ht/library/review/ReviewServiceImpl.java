@@ -26,26 +26,28 @@ public class ReviewServiceImpl implements ReviewService {
   private final BookRepository bookRepository;
 
   @Override
-  public List<ReviewResponse> getReviewByBookId(UUID bookId, Pageable pageable) {
-    return repository.findByBookId(bookId, pageable)
-        .stream()
-        .map(e ->  mapper.map(e, ReviewResponse.class))
-        .collect(Collectors.toList());
+  public List<ReviewResponse> getReviewByBookId(Integer bookId, Pageable pageable) {
+//    return repository.findByBookId(bookId, pageable)
+//        .stream()
+//        .map(e ->  mapper.map(e, ReviewResponse.class))
+//        .collect(Collectors.toList());
+    return null;
   }
 
   @Override
   @Transactional
-  public ReviewResponse insertReview(UUID bookId, ReviewRequest requestDto) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (!bookRepository.existsById(bookId)) throw new ResourceNotFoundException("Book not found");
-    Review review = Review.builder()
-        .content(requestDto.getContent())
-        .rate(requestDto.getRate())
-        .user((User)authentication.getPrincipal())
-        .book(bookRepository.getReferenceById(bookId))
-        .build();
-    Review insertedReview = repository.save(review);
-    bookRepository.updateBookStatistic(bookId);
-    return mapper.map(insertedReview, ReviewResponse.class);
+  public ReviewResponse insertReview(Integer bookId, ReviewRequest requestDto) {
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if (!bookRepository.existsById(Integer)) throw new ResourceNotFoundException("Book not found");
+//    Review review = Review.builder()
+//        .content(requestDto.getContent())
+//        .rate(requestDto.getRate())
+//        .user((User)authentication.getPrincipal())
+//        .book(bookRepository.getReferenceById(bookId))
+//        .build();
+//    Review insertedReview = repository.save(review);
+//    bookRepository.updateBookStatistic(bookId);
+//    return mapper.map(insertedReview, ReviewResponse.class);
+    return null;
   }
 }

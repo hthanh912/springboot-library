@@ -1,11 +1,11 @@
 package com.ht.library.book;
 
-import com.ht.library.book.dto.BookResponse;
-import com.ht.library.book.dto.BookDetailResponse;
-import com.ht.library.book.dto.BookRequest;
+import com.ht.library.book.dto.*;
 import com.ht.library.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/books")
@@ -25,15 +24,23 @@ public class BookController {
 
   @GetMapping("")
   public ResponseEntity<List<BookResponse>> getBooks(
-      @RequestParam(value = "authorId", required = false, defaultValue = "00000000-0000-0000-0000-000000000000") UUID authorId,
-      @RequestParam(value = "genreIds", required = false, defaultValue = "") UUID[] genreIds,
-      @PageableDefault(value = 10, page = 0) Pageable pageable
+      @RequestParam(value = "authorIds", required = false) Integer[] authorIds,
+      @RequestParam(value = "genreIds", required = false, defaultValue = "") String[] genreIds,
+      @PageableDefault(value = 10, page = 0) Pageable pageable,
+      @RequestParam(value = "sort", defaultValue = "averageRating,desc") String[] sort
   ) {
-    return new ResponseEntity<>(bookService.getAllBook(authorId, genreIds, pageable), HttpStatus.OK);
+    if (authorIds == null || authorIds.length == 0) {
+      authorIds = new Integer[0]; // Assign an empty array if no ids are provided
+    }
+    Pageable pagingAndSorting = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+    return new ResponseEntity<>(bookService.getAllBook(authorIds, genreIds, pagingAndSorting), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<BookDetailResponse> getBookById(@PathVariable UUID id) {
+  public ResponseEntity<BookDetailResponse> getBookById(@PathVariable Integer id) {
     var book = bookService.getBookById(id);
     if (book != null) {
       return new ResponseEntity<>(book, HttpStatus.OK);
@@ -43,11 +50,17 @@ public class BookController {
 
   @GetMapping("/author/{authorId}")
   public ResponseEntity<List<BookResponse>> getBookByAuthorId(
-      @PathVariable UUID authorId,
-      @PageableDefault(value = 10, page = 0) Pageable pageable) {
-    return new ResponseEntity<>(bookService.getAllBook(authorId, new UUID[]{}, pageable), HttpStatus.OK);
+      @PathVariable Integer authorId,
+      @PageableDefault(value = 10, page = 0) Pageable pageable,
+      @RequestParam(value = "sort", defaultValue = "averageRating,desc") String[] sort) {
+    Pageable pagingAndSorting = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+    return new ResponseEntity<>(bookService.getAllBook(new Integer[]{authorId}, new String[0], pagingAndSorting), HttpStatus.OK);
   }
 
+  // TODO:
   @PostMapping("")
   public ResponseEntity<BookResponse> insertBook(@ModelAttribute BookRequest bookDto) throws IOException {
     var insertedBook = bookService.insertBook(bookDto);
@@ -56,12 +69,13 @@ public class BookController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteBook(@PathVariable UUID id) {
+  public void deleteBook(@PathVariable Integer id) {
     bookService.delete(id);
   }
 
+  // TODO:
   @PatchMapping("/{id}")
-  public ResponseEntity<BookResponse> patch(@PathVariable UUID id, @ModelAttribute BookRequest bookDto) throws IOException {
+  public ResponseEntity<BookResponse> patch(@PathVariable Integer id, @ModelAttribute BookRequest bookDto) throws IOException {
     var book = bookService.patch(id, bookDto);
     return new ResponseEntity<>(book, HttpStatus.OK);
   }

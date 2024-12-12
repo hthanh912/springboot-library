@@ -20,9 +20,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.filter.CorsFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +42,7 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-        .csrf()
+        .csrf().and().cors()
         .disable()
         .authorizeHttpRequests()
         .requestMatchers("/auth/**").permitAll()
@@ -67,6 +71,17 @@ public class SecurityConfiguration {
     return httpSecurity.build();
   }
 
+  @Bean
+  public CorsFilter corsFilter() {
+    return new CorsFilter(request -> {
+      CorsConfiguration config = new CorsConfiguration();
+      config.addAllowedOriginPattern("*");
+      config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+      config.setAllowedHeaders(Collections.singletonList("*"));
+      config.setAllowCredentials(true);
+      return config;
+    });
+  }
 
   public static class Http401UnauthorizedEntryPoint implements AuthenticationEntryPoint, AccessDeniedHandler {
 

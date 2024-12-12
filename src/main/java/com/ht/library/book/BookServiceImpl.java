@@ -2,9 +2,7 @@ package com.ht.library.book;
 
 import com.cloudinary.Transformation;
 import com.ht.library.author.AuthorRepository;
-import com.ht.library.book.dto.BookResponse;
-import com.ht.library.book.dto.BookDetailResponse;
-import com.ht.library.book.dto.BookRequest;
+import com.ht.library.book.dto.*;
 import com.ht.library.configs.cloudinary.FileUpload;
 import com.ht.library.exception.ResourceNotFoundException;
 import com.ht.library.utils.CommonUtils;
@@ -26,46 +24,48 @@ public class BookServiceImpl implements BookService {
   private  final FileUpload fileUpload;
 
   @Override
-  public List<BookResponse> getAllBook(UUID authorId, UUID[] genreIds, Pageable pageable) {
-    return bookrepository.findByQuery(authorId, genreIds, pageable)
-        .stream()
-        .map(book -> mapper.map(book, BookResponse.class))
-        .toList();
+  public List<BookResponse> getAllBook(Integer[] authorIds, String[] genreIds, Pageable pageable) {
+    return bookrepository.findByQuery(authorIds, genreIds, pageable);
   }
 
   @Override
-  public BookDetailResponse getBookById(UUID id) {
-    var book = bookrepository.findById(id);
-    if (book.isPresent()) {
-      return mapper.map(book.get(), BookDetailResponse.class);
-    }
-    return null;
+  public BookDetailResponse getBookById(Integer id) {
+    var book = bookrepository.getBookDetailById(id);
+    return book.orElse(null);
   }
 
+  // TODO
   @Override
   public BookResponse insertBook(BookRequest bookDTO) throws IOException {
     Book book = mapper.map(bookDTO, Book.class);
     if (!authorRepository.existsById(bookDTO.getAuthorId())) throw new ResourceNotFoundException("Author not found");
-    book.setAuthor(authorRepository.getReferenceById(bookDTO.getAuthorId()));
+//    book.setAuthor(authorRepository.getReferenceById(bookDTO.getAuthorId()));
     if (bookDTO.getCover() != null) {
       String fileName = CommonUtils.stringToSnakeCase(book.getTitle());
       String imageURL = fileUpload.uploadFile(bookDTO.getCover(), fileName, "books",
           Map.of("transformation", new Transformation().fetchFormat("auto"))
       );
-      book.setCoverUrl(imageURL);
+//      book.setCoverUrl(imageURL);
     }
     return mapper.map(bookrepository.save(book), BookResponse.class);
   }
 
+  // TODO
   @Override
-  public void delete(UUID id) {
+  public Book insertBook(Book book) throws IOException {
+    return bookrepository.save(book);
+  }
+
+  @Override
+  public void delete(Integer id) {
     if (bookrepository.existsById(id)) {
       bookrepository.deleteById(id);
     } else throw new ResourceNotFoundException("Not found book id " + id);
   }
 
+  // TODO
   @Override
-  public BookResponse patch(UUID id, BookRequest bookDTO) throws IOException {
+  public BookResponse patch(Integer id, BookRequest bookDTO) throws IOException {
     Book book = bookrepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book id " + id + "not found"));
     if (bookDTO.getTitle() != null) {
       book.setTitle(bookDTO.getTitle());
@@ -74,14 +74,14 @@ public class BookServiceImpl implements BookService {
       book.setDescription(bookDTO.getDescription());
     }
     if (bookDTO.getPublishedDate() != null) {
-      book.setPublishedDate(bookDTO.getPublishedDate());
+//      book.setPublishedDate(bookDTO.getPublishedDate());
     }
     if (bookDTO.getCover() != null) {
       String fileName = CommonUtils.stringToSnakeCase(book.getTitle());
       String imageURL = fileUpload.uploadFile(bookDTO.getCover(), fileName, "books",
           Map.of("transformation", new Transformation().fetchFormat("auto"))
       );
-      book.setCoverUrl(imageURL);
+//      book.setCoverUrl(imageURL);
     }
     return mapper.map(bookrepository.save(book), BookResponse.class);
   }

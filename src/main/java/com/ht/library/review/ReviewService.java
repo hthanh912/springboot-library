@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ReviewService {
-  List<ReviewResponse> getReviewByBookId(UUID bookId, Pageable pageable);
-  ReviewResponse insertReview(UUID bookId, ReviewRequest reviewDto);
+  List<ReviewResponse> getReviewByBookId(Integer bookId, Pageable pageable);
+  ReviewResponse insertReview(Integer bookId, ReviewRequest reviewDto);
 }

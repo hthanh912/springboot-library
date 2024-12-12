@@ -1,15 +1,8 @@
 package com.ht.library.configs;
 
-import com.ht.library.author.dto.AuthorDetailView;
-import com.ht.library.author.dto.AuthorDetailResponse;
-import com.ht.library.book.Book;
-import com.ht.library.book.dto.BookDetailResponse;
-import com.ht.library.book.dto.BookResponse;
-import com.ht.library.book.dto.BookView;
 import com.ht.library.configs.cloudinary.CloudinaryConfig;
 import com.ht.library.user.User;
 import com.ht.library.user.UserRepository;
-import com.ht.library.user.dto.UserDetailResponse;
 import com.ht.library.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -67,48 +60,6 @@ public class ApplicationConfig {
         .addMappings(mapper -> {
           mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
           mapper.map(User::getAvatarUrl, UserResponse::setAvatarUrl);
-        });
-
-    modelMapper.typeMap(User.class, UserDetailResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
-          mapper.map(User::getAvatarUrl, UserDetailResponse::setAvatarUrl);
-        });
-
-    modelMapper.typeMap(AuthorDetailView.class, AuthorDetailResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
-          mapper.map(AuthorDetailView::getPhotoUrl, AuthorDetailResponse::setPhotoUrl);
-        });
-
-    modelMapper.typeMap(Book.class, BookResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
-          mapper.map(Book::getCoverUrl, BookResponse::setCoverUrl);
-        });
-
-    modelMapper.typeMap(BookView.class, BookResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
-          mapper.map(BookView::getCoverUrl, BookResponse::setCoverUrl);
-        });
-
-    modelMapper.typeMap(BookView.class, BookDetailResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
-          mapper.map(BookView::getCoverUrl, BookDetailResponse::setCoverUrl);
-        });
-
-    modelMapper.typeMap(Book.class, BookDetailResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.MEDIUM_WIDTH));
-          mapper.map(Book::getCoverUrl, BookDetailResponse::setCoverUrl);
-        });
-
-    modelMapper.typeMap(AuthorDetailView.class, AuthorDetailResponse.class)
-        .addMappings(mapper -> {
-          mapper.using(CloudinaryConfig.convertPublicIdToUrl(CloudinaryConfig.SMALL_WIDTH));
-          mapper.map(AuthorDetailView::getPhotoUrl, AuthorDetailResponse::setPhotoUrl);
         });
 
     return modelMapper;
