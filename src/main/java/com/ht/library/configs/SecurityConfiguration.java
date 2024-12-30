@@ -24,11 +24,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.CorsFilter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -42,32 +40,47 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-        .csrf().and().cors()
-        .disable()
-        .authorizeHttpRequests()
-        .requestMatchers("/auth/**").permitAll()
-        .requestMatchers(HttpMethod.POST, "/books", "/authors/**").hasAnyAuthority("ADMIN")
-        .requestMatchers(HttpMethod.DELETE, "/books", "/authors/**").hasAnyAuthority("ADMIN")
-        .requestMatchers(HttpMethod.PATCH, "/books", "/authors/**").hasAnyAuthority("ADMIN")
-        .requestMatchers(HttpMethod.POST, "/books/{id}/reviews").authenticated()
-        .anyRequest()
-        .permitAll()
-        .and()
-        .exceptionHandling()
-        .authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
-        .accessDeniedHandler(new Http401UnauthorizedEntryPoint())
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwrAuthFilter, UsernamePasswordAuthenticationFilter.class)
-        .logout()
-        .logoutUrl("/auth/logout")
-        .addLogoutHandler(logoutHandler)
-        .logoutSuccessHandler((request, response, authentication) -> {
-          SecurityContextHolder.clearContext();
-        });
+            // Disable CSRF and CORS
+            .csrf().disable()
+            .cors().disable()
+
+            // First, permit all requests to /auth/**
+            .authorizeHttpRequests()
+            .requestMatchers("/auth/**").permitAll()
+
+            // Then, apply role-based access control for the other paths
+            .requestMatchers(HttpMethod.POST, "/books", "/authors/**").hasAuthority("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/books", "/authors/**").hasAuthority("ADMIN")
+            .requestMatchers(HttpMethod.PATCH, "/books", "/authors/**").hasAuthority("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/books/{id}/reviews").authenticated()
+
+            // Permit all other requests
+            .anyRequest().permitAll()
+            .and()
+
+            // Set up exception handling (e.g., custom 401 error handling)
+            .exceptionHandling()
+            .authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
+            .accessDeniedHandler(new Http401UnauthorizedEntryPoint())
+            .and()
+
+            // Stateless session management
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+
+            // Authentication and JWT filter
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwrAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
+            // Logout configuration
+            .logout()
+            .logoutUrl("/auth/logout")
+            .addLogoutHandler(logoutHandler)
+            .logoutSuccessHandler((request, response, authentication) -> {
+              SecurityContextHolder.clearContext();
+            });
+
     return httpSecurity.build();
   }
 
