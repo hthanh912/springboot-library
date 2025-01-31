@@ -1,8 +1,8 @@
 package com.ht.library.author;
 
-import com.ht.library.author.dto.AuthorDetailView;
+import com.ht.library.author.dto.AuthorDetailResponse;
 import com.ht.library.author.dto.AuthorPatchRequest;
-import com.ht.library.author.dto.AuthorResponse;
+import com.ht.library.author.dto.AuthorResponseImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,7 @@ public class AuthorController {
   private final AuthorService service;
 
   @GetMapping("")
-  public ResponseEntity<List<AuthorResponse>> getAllAuthors(
+  public ResponseEntity<List<AuthorResponseImpl>> getAllAuthors(
           @PageableDefault(value = 10, page = 0) Pageable pageable,
           @RequestParam(value = "sort", defaultValue = "averageRating,desc") String[] sort
   ) {
@@ -35,7 +35,7 @@ public class AuthorController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<AuthorDetailView> getAuthorById(@PathVariable Integer id) {
+  public ResponseEntity<AuthorDetailResponse> getAuthorById(@PathVariable Integer id) {
     return ResponseEntity.ok(service.getAuthorById(id));
   }
 

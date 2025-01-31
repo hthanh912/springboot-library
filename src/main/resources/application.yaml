@@ -16,6 +16,11 @@ spring:
     url: jdbc:postgresql://aws-0-ap-southeast-1.pooler.supabase.com/postgres
     username: postgres.yvpocqcwnqnizjlvxexz
     password: J8nHEW50yRmAJs41
+  redis:
+    host: localhost
+    port: 6379
+  cache:
+    type: redis
 cloudinary:
   url: cloudinary://149924232464535:bHDB80pKyomXrFyeYxs5AnyAIc0@djmhm13uu
   cloudName: djmhm13uu

@@ -1,6 +1,6 @@
 package com.ht.library.book.dto;
 
-import com.ht.library.author.dto.AuthorView;
+import com.ht.library.author.dto.AuthorResponse;
 import com.ht.library.award.dto.BookDetailAward;
 import com.ht.library.configs.cloudinary.CloudinaryConfig;
 import com.ht.library.genre.dto.GenreItemResponse;
@@ -19,7 +19,7 @@ public interface BookDetailResponse {
     String getIsbn13();
     String getPublisher();
     Set<String> getSeries();
-    Set<AuthorView> getAuthors();
+    Set<AuthorResponse> getAuthors();
     LocalDateTime getPublishDate();
     Set<String> getCharacters();
     Set<String> getPlaces();

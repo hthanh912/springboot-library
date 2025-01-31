@@ -23,7 +23,7 @@ public class BookController {
   private final BookService bookService;
 
   @GetMapping("")
-  public ResponseEntity<List<BookResponse>> getBooks(
+  public ResponseEntity<List<BookResponseImpl>> getBooks(
       @RequestParam(value = "authorIds", required = false) Integer[] authorIds,
       @RequestParam(value = "genreIds", required = false, defaultValue = "") String[] genreIds,
       @PageableDefault(value = 10, page = 0) Pageable pageable,
@@ -49,7 +49,7 @@ public class BookController {
   }
 
   @GetMapping("/author/{authorId}")
-  public ResponseEntity<List<BookResponse>> getBookByAuthorId(
+  public ResponseEntity<List<BookResponseImpl>> getBookByAuthorId(
       @PathVariable Integer authorId,
       @PageableDefault(value = 10, page = 0) Pageable pageable,
       @RequestParam(value = "sort", defaultValue = "averageRating,desc") String[] sort) {

@@ -1,11 +1,11 @@
 package com.ht.library.author.dto;
 
-import com.ht.library.configs.cloudinary.CloudinaryConfig;
 import com.ht.library.genre.dto.GenreItemResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
-public interface AuthorDetailView {
+public interface AuthorDetailResponse {
   Integer getId();
   String getName();
   LocalDateTime getBirthDate();
@@ -13,15 +13,12 @@ public interface AuthorDetailView {
   String getAbout();
   List<InfluenceAuthor> getInfluences();
   Float getAverageRating();
-  List<GenreItemResponse> getGenres();
+  Set<GenreItemResponse> getGenres();
   Integer getReviewsCount();
   Integer getRatingsCount();
+  String getImageUrl();
   LocalDateTime getCreatedAt();
   LocalDateTime getUpdatedAt();
-  default String getImageUrl() {
-    return CloudinaryConfig.getImageUrl(
-            getId().toString(), CloudinaryConfig.FOLDER.authors.toString(), CloudinaryConfig.MEDIUM_WIDTH);
-  };
 
   interface InfluenceAuthor {
     Integer getId();
