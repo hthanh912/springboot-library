@@ -1,6 +1,7 @@
 package com.ht.library.book;
 import com.ht.library.book.dto.BookDetailResponse;
 import com.ht.library.book.dto.BookResponse;
+import com.ht.library.book.dto.BookResponseImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

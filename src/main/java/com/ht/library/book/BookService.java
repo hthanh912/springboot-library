@@ -9,8 +9,8 @@ import java.util.List;
 
 @Service
 public interface BookService {
-  List<BookResponse> getAllBook(Integer[] authorIds, String[] genreIds, Pageable pageable);
-  BookDetailResponse getBookById(Integer id);
+  List<BookResponseImpl> getAllBook(Integer[] authorIds, String[] genreIds, Pageable pageable);
+  BookDetailResponseImpl getBookById(Integer id);
   BookResponse insertBook(BookRequest book) throws IOException;
   Book insertBook(Book book) throws IOException;
   void delete(Integer id);

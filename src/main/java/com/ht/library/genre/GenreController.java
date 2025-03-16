@@ -1,6 +1,7 @@
 package com.ht.library.genre;
 
 import com.ht.library.book.dto.BookResponse;
+import com.ht.library.book.dto.BookResponseImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,7 +27,7 @@ public class GenreController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<List<BookResponse>> getBookByGenreId(
+  public ResponseEntity<List<BookResponseImpl>> getBookByGenreId(
       @PathVariable String id,
       @PageableDefault(value = 10, page = 0) Pageable pageable)
   {

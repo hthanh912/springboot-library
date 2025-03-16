@@ -1,6 +1,6 @@
 package com.ht.library.author;
 
-import com.ht.library.author.dto.AuthorDetailView;
+import com.ht.library.author.dto.AuthorDetailResponse;
 import com.ht.library.author.dto.AuthorResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
@@ -46,7 +45,7 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             "WHERE a.author_id = :id " +
             "GROUP BY a.author_id",
       nativeQuery = true)
-  AuthorDetailView findAuthorDetailById(@Param("id") Integer id);
+  AuthorDetailResponse findAuthorDetailById(@Param("id") Integer id);
 
   @Query(value =
         "SELECT " +
