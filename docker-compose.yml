@@ -1,0 +1,26 @@
+version: '2.1'
+
+services:
+  redis:
+    image: redis:latest
+    restart: always
+    container_name: redis
+    hostname: redis
+    volumes:
+      - ./redis/data:/data
+    ports:
+      - "6379:6379"
+
+  app:
+    build:
+      context: ..
+      dockerfile: ../Dockerfile
+    container_name: app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+
+volumes:
+  redis-data:
+    driver: local
